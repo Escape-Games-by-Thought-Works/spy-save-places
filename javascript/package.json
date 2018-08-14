@@ -1,0 +1,17 @@
+{
+  "name": "Spy-save-places",
+  "version": "1.0.0",
+  "description": "Online-Challenge at Thought Works",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "jest": "^23.2.0",
+    "npm": "^6.3.0"
+  }
+}

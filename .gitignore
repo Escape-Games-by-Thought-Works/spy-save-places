@@ -5,3 +5,4 @@ node_modules
 python/env/*
 python/__pycache__/*
 python/.pytest_cache/*
+*.pyc

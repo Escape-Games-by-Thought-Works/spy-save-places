@@ -1,7 +1,91 @@
 require 'rspec'
 
 # This is where you implement your solution 
+def chars
+  return ['A','B','C','D','E','F','G','H','I','J']
+end
+
+def x_distance(pos1, pos2)
+  return (pos1.to_i - pos2.to_i).abs
+end
+def y_distance(pos1char, pos2char)
+  pos1 = chars.index(pos1char) + 1
+  pos2 = chars.index(pos2char) + 1
+  return (pos1 - pos2).abs
+end
+
 def spy_places(agents)
+  save_places = Array.new
+  all_places = Array.new(10*10)
+  save_map = Array.new(10*10){ |index| 0 }
+  all_places.each_index { |i|
+    all_places[i] = "#{chars[i%10]}#{(i/10).floor+1}"
+  }
+
+  # Generate a save-map for each field.
+  # Iterate over all agents and get the distance for each one
+  # Save the smallest number. Then get the biggest number(s). That are the save places.
+  all_places.each_index { |i|
+    x = i%10
+    y = (i/10).floor
+
+    local_min = 100
+    agents.each { |agent|
+      distance = (agent[0] - x).abs + (agent[1] - y).abs
+      if distance < local_min
+        save_map[i] = distance
+        local_min = distance
+      end
+    }
+  }
+
+  max_num = save_map.max
+
+  return "There are no safe locations for Alex! :-(" if max_num == 0
+ 
+  save_map.each.with_index { |x, i| 
+    save_places << [i%10, (i/10).floor] if x == max_num 
+  }
+
+  p max_num
+  p save_map
+
+  return save_places
+end
+
+def spy_places_interface(agents)
+  return 'The whole city is safe for Alex! :-)' if agents.empty?
+
+  save_places = Array.new
+  all_places = Array.new(10*10)
+  save_map = Array.new(10*10){ |index| 0 }
+  all_places.each_index { |i|
+    all_places[i] = "#{chars[i%10]}#{(i/10).floor+1}"
+  }
+  
+  # Generate a save-map for each field.
+  # Iterate over all agents and get the distance for each one
+  # Save the smallest number. Then get the biggest number(s). That are the save places.
+  all_places.each_index { |i|
+    local_min = 100
+    agents.each { |agent|
+      distance = x_distance(agent[1,2], all_places[i][1,2]) + y_distance(agent[0], all_places[i][0])
+      if distance < local_min
+        save_map[i] = distance
+        local_min = distance
+      end
+    }
+  }
+
+  max_num = save_map.max
+
+  return "There are no safe locations for Alex! :-(" if max_num == 0
+ 
+  save_map.each.with_index { |x, i| 
+    save_places << all_places[i] if x == max_num 
+  }
+
+  return save_places.sort
 end
 
 def spy_places_interface(agents)

@@ -3,3 +3,5 @@ node_modules
 .DS_Store
 # ignore python virtual environment
 python/env/*
+python/__pycache__/*
+python/.pytest_cache/*

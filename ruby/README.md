@@ -5,11 +5,11 @@ Requirements:
 rspec
 
 ```
-gem install rspec
+bundle install
 ```
 
 To run the test:
 
 ```
-rspec run.rb
+bundle exec rspec run.rb
 ```

@@ -1,4 +1,4 @@
-# Find save places in Ruby
+# "Spy save places" in Ruby
 
 Requirements:
 

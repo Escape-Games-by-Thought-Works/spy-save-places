@@ -1,4 +1,4 @@
-# Code Challenge: Find save places
+# Code Challenge: Spy save places
 
 We prepared repositories with test-suites for different coding languages. In order to solve the challenge, pick one of the favorite language and write the functions, so that all tests in the test-suites get green.
 

@@ -1,12 +1,16 @@
 version: 2
 jobs:
   test:
-    working_directory: ./ruby
     docker:
       - image: circleci/ruby:2.4.4-jessie
     steps:
       - checkout
-      - run: bundle exec rspec run.rb
+      - run: 
+        - name: Install dependencies
+        - command: cd ./ruby && bundle install
+      - run:
+        - name: Run tests
+        - command: bundle exec rspec ./ruby/run.rb
 
 workflows:
   version: 2

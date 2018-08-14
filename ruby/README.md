@@ -1,15 +1,9 @@
 # "Spy save places" in Ruby
 
-Requirements:
 
-rspec
+### Getting started
 
-```
-bundle install
-```
-
-To run the test:
-
-```
-bundle exec rspec run.rb
-```
+- cd into project directory
+- Install dependencies: `bundle install`
+- Run tests:
+  - run tests once: `bundle exec rspec run.rb`

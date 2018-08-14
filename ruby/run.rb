@@ -1,3 +1,5 @@
+require 'rspec'
+
 # This is where you implement your solution 
 def chars
   return ['A','B','C','D','E','F','G','H','I','J']
@@ -13,6 +15,45 @@ def y_distance(pos1char, pos2char)
 end
 
 def spy_places(agents)
+  save_places = Array.new
+  all_places = Array.new(10*10)
+  save_map = Array.new(10*10){ |index| 0 }
+  all_places.each_index { |i|
+    all_places[i] = "#{chars[i%10]}#{(i/10).floor+1}"
+  }
+
+  # Generate a save-map for each field.
+  # Iterate over all agents and get the distance for each one
+  # Save the smallest number. Then get the biggest number(s). That are the save places.
+  all_places.each_index { |i|
+    x = i%10
+    y = (i/10).floor
+
+    local_min = 100
+    agents.each { |agent|
+      distance = (agent[0] - x).abs + (agent[1] - y).abs
+      if distance < local_min
+        save_map[i] = distance
+        local_min = distance
+      end
+    }
+  }
+
+  max_num = save_map.max
+
+  return "There are no safe locations for Alex! :-(" if max_num == 0
+ 
+  save_map.each.with_index { |x, i| 
+    save_places << [i%10, (i/10).floor] if x == max_num 
+  }
+
+  p max_num
+  p save_map
+
+  return save_places
+end
+
+def spy_places_interface(agents)
   return 'The whole city is safe for Alex! :-)' if agents.empty?
 
   save_places = Array.new
@@ -21,8 +62,7 @@ def spy_places(agents)
   all_places.each_index { |i|
     all_places[i] = "#{chars[i%10]}#{(i/10).floor+1}"
   }
-  p all_places
-
+  
   # Generate a save-map for each field.
   # Iterate over all agents and get the distance for each one
   # Save the smallest number. Then get the biggest number(s). That are the save places.
@@ -48,32 +88,24 @@ def spy_places(agents)
   return save_places.sort
 end
 
-require 'rspec'
-RSpec.describe 'Testing Helper Methods' do
-  it 'Returns correct x-distance' do
-    expect(x_distance(2, 2)).to eq(0)
-    expect(x_distance(3, 2)).to eq(1)
-    expect(x_distance(1, 10)).to eq(9)
-    expect(x_distance(1, 8)).to eq(7)
-    expect(x_distance(7, 3)).to eq(4)
-    expect(x_distance(5, 7)).to eq(2)
+# Do not edit below this line...!
+RSpec.describe 'Spy Places Level 1' do
+  it 'some places are save if agents are some' do
+    agents =
+      [[1,1],[3,5],[4,8],[7,3],[7,8],[9,1]]
+    expect(spy_places(agents)).to match_array([[0,9],[0,7],[5,0]])
   end
-
-  it 'Returns correct y-distance' do
-    expect(y_distance('C', 'C')).to eq(0)
-    expect(y_distance('D', 'C')).to eq(1)
-    expect(y_distance('A', 'J')).to eq(9)
-    expect(y_distance('A', 'H')).to eq(7)
-    expect(y_distance('G', 'C')).to eq(4)
-    expect(y_distance('E', 'G')).to eq(2)
+  it 'some places are save if agents are some' do
+    agents = 
+      [[0,0]]
+    expect(spy_places(agents)).to match_array([[9,9]])
   end
 end
 
-# Do not edit below this line...!
-RSpec.describe 'Spy Places' do
+RSpec.describe 'Spy Places Level 2' do
   it 'expects all save places at no agents' do
     agents = []
-    expect(spy_places(agents)).to eq('The whole city is safe for Alex! :-)')
+    expect(spy_places_interface(agents)).to eq('The whole city is safe for Alex! :-)')
   end
 
   it 'no place is save if agents are everywhere' do
@@ -88,22 +120,22 @@ RSpec.describe 'Spy Places' do
        'H1','H2','H3','H4','H5','H6','H7','H8','H9','H10',
        'I1','I2','I3','I4','I5','I6','I7','I8','I9','I10',
        'J1','J2','J3','J4','J5','J6','J7','J8','J9','J10']
-    expect(spy_places(agents)).to eq('There are no safe locations for Alex! :-(')
+    expect(spy_places_interface(agents)).to eq('There are no safe locations for Alex! :-(')
   end
 
   it 'some places are save if agents are some' do
     agents = 
       ['B2','D6','E9','H4','H9','J2']
-    expect(spy_places(agents)).to eq(['A10','A8','F1'])
+    expect(spy_places_interface(agents)).to eq(['A10','A8','F1'])
   end
   it 'some places are save if agents are some' do
     agents = 
       ['B4','C4','C8','E2','F10','H1','J6']
-    expect(spy_places(agents)).to eq(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5', 'G7','H8','I9', 'J10'])
+    expect(spy_places_interface(agents)).to eq(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5', 'G7','H8','I9', 'J10'])
   end
   it 'some places are save if agents are some' do
     agents = 
       ['A1']
-    expect(spy_places(agents)).to eq(['J10'])
+    expect(spy_places_interface(agents)).to eq(['J10'])
   end
 end

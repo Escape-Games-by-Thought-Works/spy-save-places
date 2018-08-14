@@ -8,10 +8,9 @@ jobs:
       - run: 
           name: Install dependencies
           command: cd ./ruby && bundle install
-      - run: pwd
       - run:
           name: Run tests
-          command: bundle exec rspec run.rb
+          command: cd ./ruby && bundle exec rspec run.rb
 
 workflows:
   version: 2

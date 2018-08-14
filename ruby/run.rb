@@ -1,13 +1,30 @@
+require 'rspec'
+
 # This is where you implement your solution 
 def spy_places(agents)
 end
 
+def spy_places_interface(agents)
+end
+
 # Do not edit below this line...!
-require 'rspec'
-RSpec.describe 'Spy Places' do
+RSpec.describe 'Spy Places Level 1' do
+  it 'some places are save if agents are some' do
+    agents =
+      [[1,1],[3,5],[4,8],[7,3],[7,8],[9,1]]
+    expect(spy_places(agents)).to match_array([[0,9],[0,7],[5,0]])
+  end
+  it 'some places are save if agents are some' do
+    agents = 
+      [[0,0]]
+    expect(spy_places(agents)).to match_array([[9,9]])
+  end
+end
+
+RSpec.describe 'Spy Places Level 2' do
   it 'expects all save places at no agents' do
     agents = []
-    expect(spy_places(agents)).to eq('The whole city is safe for Alex! :-)')
+    expect(spy_places_interface(agents)).to eq('The whole city is safe for Alex! :-)')
   end
 
   it 'no place is save if agents are everywhere' do
@@ -22,22 +39,22 @@ RSpec.describe 'Spy Places' do
        'H1','H2','H3','H4','H5','H6','H7','H8','H9','H10',
        'I1','I2','I3','I4','I5','I6','I7','I8','I9','I10',
        'J1','J2','J3','J4','J5','J6','J7','J8','J9','J10']
-    expect(spy_places(agents)).to eq('There are no safe locations for Alex! :-(')
+    expect(spy_places_interface(agents)).to eq('There are no safe locations for Alex! :-(')
   end
 
   it 'some places are save if agents are some' do
     agents = 
       ['B2','D6','E9','H4','H9','J2']
-    expect(spy_places(agents)).to eq(['A10','A8','F1'])
+    expect(spy_places_interface(agents)).to eq(['A10','A8','F1'])
   end
   it 'some places are save if agents are some' do
     agents = 
       ['B4','C4','C8','E2','F10','H1','J6']
-    expect(spy_places(agents)).to eq(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5', 'G7','H8','I9', 'J10'])
+    expect(spy_places_interface(agents)).to eq(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5', 'G7','H8','I9', 'J10'])
   end
   it 'some places are save if agents are some' do
     agents = 
       ['A1']
-    expect(spy_places(agents)).to eq(['J10'])
+    expect(spy_places_interface(agents)).to eq(['J10'])
   end
 end

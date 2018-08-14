@@ -44,6 +44,23 @@ pip install -r requirements.txt
 
 This will also install numpy and scipy for your convenience. However, you are not required to use these packages to complete the exercise.
 
+
+### Creating the solution
+
+You should see the file `safe_spaces.py`, which contains a class definition for a class named `SafetyFinder`. This class contains a method called `find_safe_spaces` which takes a single argument, `agents`.
+
+We are expecting `agents` to be a list of coordinates, e.g.
+
+```python
+finder = SafetyFinder()
+finder.find_safe_spaces(['A1', 'B2', 'C3'])
+```
+
+should return a list of the safest spaces in the city for Alex to hide.
+
+The tests expect that you will use this method; however, you may add other methods to the class as necessary for your solution.
+
+
 ### Running tests
 
 To run the test:

@@ -1,3 +1,5 @@
 node_modules
 .bundle/*
 .DS_Store
+# ignore python virtual environment
+python/env/*

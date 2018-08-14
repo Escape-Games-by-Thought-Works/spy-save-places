@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/ruby:2.4.4-jessie
+    steps:
+      - checkout
+      - run: bundle exec rspec /ruby/run.rb
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - test

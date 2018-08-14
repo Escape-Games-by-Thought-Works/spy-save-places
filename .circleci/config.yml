@@ -6,7 +6,7 @@ jobs:
       - image: circleci/ruby:2.4.4-jessie
     steps:
       - checkout
-      - run: bundle exec rspec /ruby/run.rb
+      - run: bundle exec rspec run.rb
 
 workflows:
   version: 2

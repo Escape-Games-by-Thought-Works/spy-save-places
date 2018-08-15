@@ -35,6 +35,38 @@ class SafetyFinderTest(unittest.TestCase):
         self.assertEqual(SafetyFinder().convert_coordinates(['J10']),
                          [[9, 9]])
 
+    # Level 2 -- Find safe spaces in the city based on agent locations
+    def test_safe_spaces_round1(self):
+        """Test for six agents at specified locations"""
+        agents = [[1, 1], [3, 5], [4, 8], [7, 3], [7, 8], [9, 1]]
+        self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
+                         sorted([[0, 9], [0, 7], [5, 0]]))
+
+    def test_safe_spaces_round2(self):
+        """Test for six agents at different specified locations"""
+        agents = [[0, 0], [0, 9], [1, 5], [5, 1], [9, 0], [9, 9]]
+        self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
+                         sorted([[5, 7], [6, 6], [7, 5]]))
+
+    def test_safe_spaces_round3(self):
+        """Test for one agent at a specified location"""
+        agents = [[0, 0]]
+        self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
+                         sorted([[9, 9]]))
+
+    def test_round2(self):
+        """Test for seven agents at specified locations"""
+        agents = ['B4', 'C4', 'C8', 'E2', 'F10', 'H1', 'J6']
+        self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
+                         sorted(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5',
+                                 'G7', 'H8', 'I9', 'J10']))
+
+    def test_round3(self):
+        """Test when only a single agent remains in the city"""
+        agents = ['A1']
+        self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
+                         sorted(['J10']))
+
     def test_no_agents(self):
         """Tests for no agents in the city"""
         self.assertEqual(SafetyFinder().find_safe_spaces([]),

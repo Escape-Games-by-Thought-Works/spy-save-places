@@ -1,30 +1,64 @@
 require 'rspec'
 
 # This is where you implement your solution 
-def spy_places(agents)
+def convert_coordinates(agents)
 end
 
-def spy_places_interface(agents)
+def find_safe_spaces(agents)
 end
 
-# Do not edit below this line...!
-RSpec.describe 'Spy Places Level 1' do
+def advice_for_alex(agents)
+end
+
+# Do not edit below this line!
+RSpec.describe 'Spy Places Level 1 - convert coordinates' do
+  it 'no agents return empty array' do
+    agents = []
+    expect(convert_coordinates(agents)).to match_array([])
+  end
+
+  it 'one agent casts to array' do
+    agents = 
+      ['F3']
+    expect(convert_coordinates(agents)).to match_array([[5,2]])
+  end
+
+  it 'some agents casts to array' do
+    agents = 
+      ['B6','C2','J7']
+    expect(convert_coordinates(agents)).to match_array([[1,5],[2,1],[9,6]])
+  end
+
+  it 'handle two digits' do
+    agents = 
+      ['J10']
+    expect(convert_coordinates(agents)).to match_array([9,9])
+  end
+end
+
+RSpec.describe 'Spy Places Level 2 - find save places' do
   it 'some places are save if agents are some' do
     agents =
       [[1,1],[3,5],[4,8],[7,3],[7,8],[9,1]]
-    expect(spy_places(agents)).to match_array([[0,9],[0,7],[5,0]])
+    expect(find_safe_spaces(agents)).to match_array([[0,9],[0,7],[5,0]])
+  end
+  it 'some places are save if agents are some' do
+    agents = 
+      ['A1','A10','B6','F2','J1','J10']
+      [[0,0],[0,9],[1,5],[5,1],[9,0],[9,9]]
+    expect(find_safe_spaces(agents)).to match_array([5,7],[6,6],[7,5])
   end
   it 'some places are save if agents are some' do
     agents = 
       [[0,0]]
-    expect(spy_places(agents)).to match_array([[9,9]])
+    expect(find_safe_spaces(agents)).to match_array([[9,9]])
   end
 end
 
-RSpec.describe 'Spy Places Level 2' do
+RSpec.describe 'Spy Places Level 3 - find edge cases and give advice to alex' do
   it 'expects all save places at no agents' do
     agents = []
-    expect(spy_places_interface(agents)).to eq('The whole city is safe for Alex! :-)')
+    expect(advice_for_alex(agents)).to eq('The whole city is safe for Alex! :-)')
   end
 
   it 'no place is save if agents are everywhere' do
@@ -39,22 +73,32 @@ RSpec.describe 'Spy Places Level 2' do
        'H1','H2','H3','H4','H5','H6','H7','H8','H9','H10',
        'I1','I2','I3','I4','I5','I6','I7','I8','I9','I10',
        'J1','J2','J3','J4','J5','J6','J7','J8','J9','J10']
-    expect(spy_places_interface(agents)).to eq('There are no safe locations for Alex! :-(')
+    expect(advice_for_alex(agents)).to match_array('There are no safe locations for Alex! :-(')
   end
 
   it 'some places are save if agents are some' do
     agents = 
       ['B2','D6','E9','H4','H9','J2']
-    expect(spy_places_interface(agents)).to eq(['A10','A8','F1'])
+    expect(advice_for_alex(agents)).to match_array(['A10','A8','F1'])
   end
   it 'some places are save if agents are some' do
     agents = 
       ['B4','C4','C8','E2','F10','H1','J6']
-    expect(spy_places_interface(agents)).to eq(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5', 'G7','H8','I9', 'J10'])
+    expect(advice_for_alex(agents)).to match_array(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5', 'G7','H8','I9', 'J10'])
+  end
+  it 'some places are save if agents are some' do
+    agents = 
+      ['A1','A10','B6','F2','J1','J10']
+    expect(advice_for_alex(agents)).to match_array(['F8', 'G7', 'H6'])
   end
   it 'some places are save if agents are some' do
     agents = 
       ['A1']
-    expect(spy_places_interface(agents)).to eq(['J10'])
+    expect(advice_for_alex(agents)).to match_array(['J10'])
+  end
+  it 'some places are save if agents are some' do
+    agents = 
+      ['A12']
+    expect(advice_for_alex(agents)).to eq('The whole city is safe for Alex! :-)')
   end
 end

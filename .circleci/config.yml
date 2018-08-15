@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  test:
+  test-ruby:
     docker:
       - image: circleci/ruby:2.4.4-jessie
     steps:
@@ -12,8 +12,21 @@ jobs:
           name: Run tests
           command: cd ./ruby && bundle exec rspec run.rb
 
+  test-javascript:
+    docker:
+      - image: circleci/node:10.8-browsers
+    steps:
+      - checkout
+      - run: 
+          name: Install dependencies
+          command: cd ./javascript && npm install
+      - run:
+          name: Run tests
+          command: cd ./ruby && npm test
+
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - test
+      - test-ruby
+      - test-javascript

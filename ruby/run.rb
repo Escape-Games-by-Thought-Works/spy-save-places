@@ -47,7 +47,7 @@ RSpec.describe 'Spy Places Level 2 - find save places' do
       [[0,0],[0,9],[1,5],[5,1],[9,0],[9,9]]
     expect(find_safe_spaces(agents)).to match_array([5,7],[6,6],[7,5])
   end
-  it 'some places are save if agents are some' do
+  it 'one place is save' do
     agents = 
       [[0,0]]
     expect(find_safe_spaces(agents)).to match_array([[9,9]])

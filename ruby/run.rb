@@ -54,7 +54,7 @@ RSpec.describe 'Spy Places Level 2 - find save places' do
   end
 end
 
-RSpec.describe 'Spy Places Level 3 - find edge cases and give advice to alex' do
+RSpec.describe 'Spy Places Level 3 - find edge cases and give advice to Alex' do
   it 'expects all save places at no agents' do
     agents = []
     expect(advice_for_alex(agents)).to eq('The whole city is safe for Alex! :-)')

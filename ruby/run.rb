@@ -10,8 +10,9 @@ end
 def advice_for_alex(agents)
 end
 
-# Do not edit below this line!
-RSpec.describe 'Spy Places Level 1 - convert coordinates' do
+# Please enable Level 1, 2, 3-Tests by replacing xdescribe with describe!
+# Do not edit the tests itself!
+RSpec.xdescribe 'Spy Places Level 1 - convert coordinates' do
   it 'no agents return empty array' do
     agents = []
     expect(convert_coordinates(agents)).to match_array([])
@@ -36,7 +37,7 @@ RSpec.describe 'Spy Places Level 1 - convert coordinates' do
   end
 end
 
-RSpec.describe 'Spy Places Level 2 - find save places' do
+RSpec.xdescribe 'Spy Places Level 2 - find save places' do
   it 'some places are save if agents are some' do
     agents =
       [[1,1],[3,5],[4,8],[7,3],[7,8],[9,1]]
@@ -54,7 +55,7 @@ RSpec.describe 'Spy Places Level 2 - find save places' do
   end
 end
 
-RSpec.describe 'Spy Places Level 3 - find edge cases and give advice to Alex' do
+RSpec.xdescribe 'Spy Places Level 3 - find edge cases and give advice to Alex' do
   it 'expects all save places at no agents' do
     agents = []
     expect(advice_for_alex(agents)).to eq('The whole city is safe for Alex! :-)')
@@ -83,19 +84,19 @@ RSpec.describe 'Spy Places Level 3 - find edge cases and give advice to Alex' do
   it 'some places are save if agents are some' do
     agents = 
       ['B4','C4','C8','E2','F10','H1','J6']
-    expect(advice_for_alex(agents)).to match_array(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5', 'G7','H8','I9', 'J10'])
+    expect(advice_for_alex(agents)).to match_array(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5', 'G7', 'H8', 'I9', 'J10'])
   end
   it 'some places are save if agents are some' do
     agents = 
       ['A1','A10','B6','F2','J1','J10']
     expect(advice_for_alex(agents)).to match_array(['F8', 'G7', 'H6'])
   end
-  it 'some places are save if agents are some' do
+  it 'one save place' do
     agents = 
       ['A1']
     expect(advice_for_alex(agents)).to match_array(['J10'])
   end
-  it 'some places are save if agents are some' do
+  it 'agent outside the city' do
     agents = 
       ['A12']
     expect(advice_for_alex(agents)).to eq('The whole city is safe for Alex! :-)')

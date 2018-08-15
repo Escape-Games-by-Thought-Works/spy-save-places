@@ -22,7 +22,7 @@ jobs:
           command: cd ./javascript && npm install
       - run:
           name: Run tests
-          command: cd ./ruby && npm test
+          command: cd ./javascript && npm test
 
 workflows:
   version: 2

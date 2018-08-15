@@ -7,12 +7,33 @@ from safe_spaces import SafetyFinder
 class SafetyFinderTest(unittest.TestCase):
     """A class that contains the unit tests that adhere to the game spec"""
 
-    def test_convert_coordinates(self):
-        """Test for accurate conversion from alphanumeric coordinates
-        to indexed vector coordinates.
+    # Level 1 -- Test for conversion from alphanumeric coordinates to vectors
+    def test_empty_coordinates(self):
+        """Test that the code adequately handles empty lists
         """
-        self.assertEqual(SafetyFinder().convert_coordinates(['A5']),
-                         [[0, 5]])
+        self.assertEqual(SafetyFinder().convert_coordinates([]),[])
+
+    def test_single_coordinate(self):
+        """Test for accurate conversion from a single alphanumeric coordinate
+        to an indexed vector coordinate.
+        """
+        self.assertEqual(SafetyFinder().convert_coordinates(['F3']),
+                         [[5, 2]])
+
+    def test_multiple_coordinates(self):
+        """Test for accurate conversion from a list of alphanumeric coordinates
+        to a list of indexed vector coordinates.
+        """
+        agents = ['B6', 'C2', 'J7']
+        self.assertEqual(SafetyFinder().convert_coordinates(agents),
+                         [[1, 5], [2, 1], [9, 6]])
+
+    def test_double_digits(self):
+        """Ensure that alphanumeric coordinates with two digit numbers
+        are properly converted
+        """
+        self.assertEqual(SafetyFinder().convert_coordinates(['J10']),
+                         [[9, 9]])
 
     def test_no_agents(self):
         """Tests for no agents in the city"""

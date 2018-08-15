@@ -1,0 +1,5 @@
+# ignore python virtual environment
+env/*
+__pycache__/*
+.pytest_cache/*
+*.pyc

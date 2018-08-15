@@ -1,4 +1,4 @@
-# "Spy save places" in JavScript
+# "Find save places" in JavaScript
 
 ### Getting started
 

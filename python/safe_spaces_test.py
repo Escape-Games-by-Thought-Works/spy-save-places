@@ -3,8 +3,16 @@ import unittest
 
 from safe_spaces import SafetyFinder
 
+@unittest.skip("Comment or delete this line to solve the challenge with python")
 class SafetyFinderTest(unittest.TestCase):
     """A class that contains the unit tests that adhere to the game spec"""
+
+    def test_convert_coordinates(self):
+        """Test for accurate conversion from alphanumeric coordinates
+        to indexed vector coordinates.
+        """
+        self.assertEqual(SafetyFinder().convert_coordinates(['A5']),
+                         [[0, 5]])
 
     def test_no_agents(self):
         """Tests for no agents in the city"""

@@ -23,8 +23,23 @@ class SafetyFinder:
 
         Arguments:
         agents -- a list-like object containing the map coordinates of agents.
-            Each entry should be formatted in alphanumeric form, e.g. A8, C10, etc.
+            Each entry should be formatted in indexed vector form,
+            e.g. [0, 5], [3, 7], etc.
 
-        Returns a list of safe spaces in letter-number form.
+        Returns a list of safe spaces in indexed vector form.
+        """
+        pass
+
+    def advice_for_alex(self, agents):
+        """This method will take an array with agent locations and offer advice
+        to Alex for where she should hide out in the city, with special advice for
+        edge cases.
+
+        Arguments:
+        agents -- a list-like object containing the map coordinates of the agents.
+            Each entry should be formatted in alphanumeric form, e.g. A10, E6, etc.
+
+        Returns either a list of alphanumeric map coordinates for Alex to hide in,
+        or a specialized message informing her of edge cases
         """
         pass

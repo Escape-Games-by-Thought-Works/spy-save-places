@@ -11,7 +11,7 @@ class SafetyFinderTest(unittest.TestCase):
     def test_empty_coordinates(self):
         """Test that the code adequately handles empty lists
         """
-        self.assertEqual(SafetyFinder().convert_coordinates([]),[])
+        self.assertEqual(SafetyFinder().convert_coordinates([]), [])
 
     def test_single_coordinate(self):
         """Test for accurate conversion from a single alphanumeric coordinate
@@ -54,22 +54,10 @@ class SafetyFinderTest(unittest.TestCase):
         self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
                          sorted([[9, 9]]))
 
-    def test_round2(self):
-        """Test for seven agents at specified locations"""
-        agents = ['B4', 'C4', 'C8', 'E2', 'F10', 'H1', 'J6']
-        self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
-                         sorted(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5',
-                                 'G7', 'H8', 'I9', 'J10']))
-
-    def test_round3(self):
-        """Test when only a single agent remains in the city"""
-        agents = ['A1']
-        self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
-                         sorted(['J10']))
-
+    # Level 3 -- Handling edge cases and offering recommendations
     def test_no_agents(self):
         """Tests for no agents in the city"""
-        self.assertEqual(SafetyFinder().find_safe_spaces([]),
+        self.assertEqual(SafetyFinder().advice_for_alex([]),
                          'The whole city is safe for Alex! :-)')
 
     def test_agents_everywhere(self):
@@ -84,27 +72,33 @@ class SafetyFinderTest(unittest.TestCase):
                   'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7', 'H8', 'H9', 'H10',
                   'I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8', 'I9', 'I10',
                   'J1', 'J2', 'J3', 'J4', 'J5', 'J6', 'J7', 'J8', 'J9', 'J10']
-        self.assertEqual(SafetyFinder().find_safe_spaces(agents),
+        self.assertEqual(SafetyFinder().advice_for_alex(agents),
                          'There are no safe locations for Alex! :-(')
 
-    def test_round1(self):
+    def test_advice_round1(self):
         """Test for six agents at specified locations"""
         agents = ['B2', 'D6', 'E9', 'H4', 'H9', 'J2']
-        self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
+        self.assertEqual(sorted(SafetyFinder().advice_for_alex(agents)),
                          sorted(['A10', 'A8', 'F1']))
 
-    def test_round2(self):
+    def test_advice_round2(self):
         """Test for seven agents at specified locations"""
         agents = ['B4', 'C4', 'C8', 'E2', 'F10', 'H1', 'J6']
-        self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
+        self.assertEqual(sorted(SafetyFinder().advice_for_alex(agents)),
                          sorted(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5',
                                  'G7', 'H8', 'I9', 'J10']))
 
-    def test_round3(self):
+    def test_advice_round3(self):
         """Test when only a single agent remains in the city"""
         agents = ['A1']
-        self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
+        self.assertEqual(sorted(SafetyFinder().advice_for_alex(agents)),
                          sorted(['J10']))
+
+    def test_agent_outside_map(self):
+        """Test when only a single agent remains in the city"""
+        agents = ['A12']
+        self.assertEqual(SafetyFinder().advice_for_alex(agents),
+                         'The whole city is safe for Alex! :-)')
 
 
 if __name__ == '__main__':

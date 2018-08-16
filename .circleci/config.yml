@@ -31,7 +31,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: cd ./python && pip install -r requirements.txt
+          command: cd ./python && pip install -r requirements.txt --user
       - run:
           name: Run tests
           command: cd ./python && pytest safe_spaces_test.py

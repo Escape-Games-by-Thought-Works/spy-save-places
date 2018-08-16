@@ -18,7 +18,7 @@ All things are located in the file run.rb. There you will find three defintions 
 
 For each function exists a suite of rspec-tests with example input and exprected results from the function. You can find all the requirements of the challenge in this tests.
 
-__By defaults the tests are disabled, please enable the tests, by replaceing the 'xdescribe' with 'describe'__
+__By defaults the tests are disabled. Please enable the tests, by replacing the 'xdescribe' with 'describe'__
 
 ### Running tests
 

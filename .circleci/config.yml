@@ -31,10 +31,15 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: cd ./python && pip install -r requirements.txt
+          command: |
+              cd ./python && python3 -m venv env
+              . env/bin/activate
+              pip install -r requirements.txt
       - run:
           name: Run tests
-          command: cd ./python && pytest safe_spaces_test.py
+          command: |
+              cd ./python && . env/bin/activate
+              pytest safe_spaces_test.py
 
 workflows:
   version: 2

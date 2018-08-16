@@ -89,7 +89,7 @@ class SafetyFinderTest(unittest.TestCase):
                                  'G7', 'H8', 'I9', 'J10']))
 
     def test_advice_round3(self):
-        """Test for seven agents at specified locations"""
+        """Test for a different six agents at specified locations"""
         agents = ['A1', 'A10', 'B6', 'F2', 'J1', 'J10']
         self.assertEqual(sorted(SafetyFinder().advice_for_alex(agents)),
                          sorted(['F8', 'G7', 'H6']))

@@ -34,7 +34,7 @@ jobs:
           command: |
               cd ./python && python3 -m venv env
               . env/bin/activate
-              pip install -r requirements.txt --user
+              pip install -r requirements.txt
       - run:
           name: Run tests
           command: |

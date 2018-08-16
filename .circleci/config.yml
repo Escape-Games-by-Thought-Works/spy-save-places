@@ -42,3 +42,5 @@ workflows:
     jobs:
       - test-ruby
       - test-javascript
+      - test-python
+

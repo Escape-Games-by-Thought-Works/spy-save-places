@@ -47,16 +47,16 @@ This will also install numpy and scipy for your convenience. However, you are no
 
 ### Creating the solution
 
-You should see the file `safe_spaces.py`, which contains a class definition for a class named `SafetyFinder`. This class contains a method called `find_safe_spaces` which takes a single argument, `agents`.
+You should see the file `safe_spaces.py`, which contains a class definition for a class named `SafetyFinder`. This class contains three methods: `convert_coordinates`, `find_safe_spaces`, and `advice_for_alex`.
 
-We are expecting `agents` to be a list of coordinates, e.g.
+There are three levels to the challenge. In the first level you are asked to convert alphanumeric map coordinates (e.g. 'A3') to a more easily handled form. In the next level, you are asked to find the "safe spaces" in the map. Finally, in the last level, you are asked to provide feedback to Alex and to handle any edge cases.
+
+For each method, we are expecting `agents` to be a list of coordinates, e.g.
 
 ```python
 finder = SafetyFinder()
-finder.find_safe_spaces(['A1', 'B2', 'C3'])
+finder.convert_coordinates(['A1', 'B2', 'C3'])
 ```
-
-should return a list of the safest spaces in the city for Alex to hide.
 
 The tests expect that you will use this method; however, you may add other methods to the class as necessary for your solution.
 

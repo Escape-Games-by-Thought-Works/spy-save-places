@@ -5,13 +5,13 @@ class SafetyFinder:
     safest places in the city for Alex to hide out
     """
 
-    def convert_coordinates(self, coordinates):
+    def convert_coordinates(self, agents):
         """This method should take a list of alphanumeric coordinates (e.g. 'A6')
         and return an array of the coordinates converted to arrays with zero-indexing.
         For instance, 'A6' should become [0, 5]
 
         Arguments:
-        coordinates -- a list-like object containing alphanumeric coordinates.
+        agents -- a list-like object containing alphanumeric coordinates.
 
         Returns a list of coordinates in zero-indexed vector form.
         """

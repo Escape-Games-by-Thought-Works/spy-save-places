@@ -15,6 +15,8 @@ class SafetyFinder:
 
         Returns a list of coordinates in zero-indexed vector form.
         """
+	if len(agents) == 0:
+            return []
         pass
 
     def find_safe_spaces(self, agents):

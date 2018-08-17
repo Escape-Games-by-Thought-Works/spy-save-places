@@ -1,6 +1,9 @@
-# Code Challenge: Spy save places
+# Code Challenge: Spy safe places
 
 We prepared repositories with test-suites for different coding languages. In order to solve the challenge, pick one of the favorite language and write the functions, so that all tests in the test-suites get green.
+
+
+## How to participate
 
 To begin, fork this repository and checkout your fork.
 

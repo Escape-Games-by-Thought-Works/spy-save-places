@@ -32,7 +32,7 @@ xdescribe('Spy Places Level 2 - find save places', () => {
   it('some places are save if agents are some', () => {
     const agents = [[0, 0], [0, 9], [1, 5], [5, 1], [9, 0], [9, 9]]
     expect(findSafePlaces(agents).length).toEqual(3)
-    expect(findSafePlaces(agents)).toEqual(expect.arrayContaining([5, 7], [6, 6], [7, 5]))
+    expect(findSafePlaces(agents)).toEqual(expect.arrayContaining([[5, 7], [6, 6], [7, 5]]))
   })
   it('one place is save', () => {
     const agents = [[0, 0]]
@@ -84,7 +84,6 @@ xdescribe('Spy Places Level 3 - find edge cases and give advice to Alex', () => 
   })
   it('agent outside the city', () => {
     const agents = ['A12']
-    expect(adviceForAlex(agents).length).toEqual(1)
     expect(adviceForAlex(agents)).toEqual('The whole city is safe for Alex! :-)')
   })
 })

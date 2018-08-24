@@ -64,27 +64,27 @@ xdescribe('Spy Places Level 3 - find edge cases and give advice to Alex', () => 
 
   it('some places are save if agents are some', () => {
     const agents = ['B2', 'D6', 'E9', 'H4', 'H9', 'J2']
-    expect(convertCoordinates(agents).length).toEqual(3)
-    expect(convertCoordinates(agents)).toEqual(expect.arrayContaining(['A10', 'A8', 'F1']))
+    expect(adviceForAlex(agents).length).toEqual(3)
+    expect(adviceForAlex(agents)).toEqual(expect.arrayContaining(['A10', 'A8', 'F1']))
   })
   it('some places are save if agents are some', () => {
     const agents = ['B4', 'C4', 'C8', 'E2', 'F10', 'H1', 'J6']
-    expect(convertCoordinates(agents).length).toEqual(11)
-    expect(convertCoordinates(agents)).toEqual(expect.arrayContaining(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5', 'G7', 'H8', 'I9', 'J10']))
+    expect(adviceForAlex(agents).length).toEqual(11)
+    expect(adviceForAlex(agents)).toEqual(expect.arrayContaining(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5', 'G7', 'H8', 'I9', 'J10']))
   })
   it('some places are save if agents are some', () => {
     const agents = ['A1', 'A10', 'B6', 'F2', 'J1', 'J10']
-    expect(convertCoordinates(agents).length).toEqual(3)
-    expect(convertCoordinates(agents)).toEqual(expect.arrayContaining(['F8', 'G7', 'H6']))
+    expect(adviceForAlex(agents).length).toEqual(3)
+    expect(adviceForAlex(agents)).toEqual(expect.arrayContaining(['F8', 'G7', 'H6']))
   })
   it('one save place', () => {
     const agents = ['A1']
-    expect(convertCoordinates(agents).length).toEqual(1)
-    expect(convertCoordinates(agents)).toEqual(expect.arrayContaining(['J10']))
+    expect(adviceForAlex(agents).length).toEqual(1)
+    expect(adviceForAlex(agents)).toEqual(expect.arrayContaining(['J10']))
   })
   it('agent outside the city', () => {
     const agents = ['A12']
-    expect(convertCoordinates(agents).length).toEqual(1)
-    expect(convertCoordinates(agents)).toEqual('The whole city is safe for Alex! :-)')
+    expect(adviceForAlex(agents).length).toEqual(1)
+    expect(adviceForAlex(agents)).toEqual('The whole city is safe for Alex! :-)')
   })
 })

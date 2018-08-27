@@ -2,6 +2,9 @@ require 'rspec'
 
 DIMENSION = 10
 INITIAL_DISTANCE = 2 * DIMENSION
+ALL_SAFE_TEXT = 'The whole city is safe for Alex! :-)'
+NO_SAFE_TEXT = 'There are no safe locations for Alex! :-('
+ALL_SAFE = Array.new(DIMENSION * DIMENSION).freeze
 
 # This is where you implement your solution 
 def convert_coordinates(agents)
@@ -33,6 +36,10 @@ def find_safe_spaces(agents)
 end
 
 def advice_for_alex(agents)
+  spaces = find_safe_spaces(convert_coordinates(agents))
+  return ALL_SAFE_TEXT if spaces.length == DIMENSION * DIMENSION
+  return NO_SAFE_TEXT if spaces.empty?
+  spaces.map { |space| "#{(space[0] + 65).chr}#{space[1] + 1}" }
 end
 
 ##### HELPER METHODS
@@ -104,7 +111,7 @@ RSpec.describe 'Spy Places Level 2 - find save places' do
   end
 end
 
-RSpec.xdescribe 'Spy Places Level 3 - find edge cases and give advice to Alex' do
+RSpec.describe 'Spy Places Level 3 - find edge cases and give advice to Alex' do
   it 'expects all save places at no agents' do
     agents = []
     expect(advice_for_alex(agents)).to eq('The whole city is safe for Alex! :-)')

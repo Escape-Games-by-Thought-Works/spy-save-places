@@ -33,7 +33,7 @@ RSpec.xdescribe 'Spy Places Level 1 - convert coordinates' do
   it 'handle two digits' do
     agents = 
       ['J10']
-    expect(convert_coordinates(agents)).to match_array([9,9])
+    expect(convert_coordinates(agents)).to match_array([[9,9]])
   end
 end
 
@@ -46,7 +46,7 @@ RSpec.xdescribe 'Spy Places Level 2 - find save places' do
   it 'some places are save if agents are some' do
     agents =
       [[0,0],[0,9],[1,5],[5,1],[9,0],[9,9]]
-    expect(find_safe_spaces(agents)).to match_array([5,7],[6,6],[7,5])
+    expect(find_safe_spaces(agents)).to match_array([[5,7],[6,6],[7,5]])
   end
   it 'one place is save' do
     agents = 
@@ -73,7 +73,7 @@ RSpec.xdescribe 'Spy Places Level 3 - find edge cases and give advice to Alex' d
        'H1','H2','H3','H4','H5','H6','H7','H8','H9','H10',
        'I1','I2','I3','I4','I5','I6','I7','I8','I9','I10',
        'J1','J2','J3','J4','J5','J6','J7','J8','J9','J10']
-    expect(advice_for_alex(agents)).to match_array('There are no safe locations for Alex! :-(')
+    expect(advice_for_alex(agents)).to eq('There are no safe locations for Alex! :-(')
   end
 
   it 'some places are save if agents are some' do

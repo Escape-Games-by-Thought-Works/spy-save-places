@@ -1,6 +1,7 @@
 require 'rspec'
 
 DIMENSION = 10
+INITIAL_DISTANCE = 2 * DIMENSION
 
 # This is where you implement your solution 
 def convert_coordinates(agents)
@@ -15,9 +16,47 @@ def convert_coordinates(agents)
 end
 
 def find_safe_spaces(agents)
+  city = Array.new(DIMENSION) { Array.new(DIMENSION) { INITIAL_DISTANCE } }
+  agents.each do |agent|
+    (0..DIMENSION - 1).each do |row|
+      prev = INITIAL_DISTANCE
+      (0..DIMENSION - 1).each do |column|
+        distance = calculate_distance agent, row, column
+        closer = distance < city[row][column]
+        break if (distance > prev) && !closer
+        prev = distance
+        city[row][column] = distance if closer
+      end
+    end
+  end
+  safe_spaces city
 end
 
 def advice_for_alex(agents)
+end
+
+##### HELPER METHODS
+
+def calculate_distance(agent, row, column)
+  (row - agent[0]).abs + (column - agent[1]).abs
+end
+
+def safe_spaces(field)
+  # find maximum distance
+  max = field.map(&:max).max
+  # NOTE: No safe fields
+  return [] if max.zero?
+  # NOTE: only safe fields
+  return ALL_SAFE if max == INITIAL_DISTANCE
+  result = []
+  (0..DIMENSION - 1).each do |row_index|
+    column = field[row_index]
+    next unless column.include?(max)
+    (0..DIMENSION - 1).each do |column_index|
+      result << [row_index, column_index] if column[column_index] == max
+    end
+  end
+  result
 end
 
 # Please enable Level 1, 2, 3-Tests by replacing xdescribe with describe!
@@ -47,7 +86,7 @@ RSpec.describe 'Spy Places Level 1 - convert coordinates' do
   end
 end
 
-RSpec.xdescribe 'Spy Places Level 2 - find save places' do
+RSpec.describe 'Spy Places Level 2 - find save places' do
   it 'some places are save if agents are some' do
     agents =
         [[1, 1], [3, 5], [4, 8], [7, 3], [7, 8], [9, 1]]

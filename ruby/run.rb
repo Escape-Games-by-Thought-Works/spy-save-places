@@ -1,7 +1,17 @@
 require 'rspec'
 
+DIMENSION = 10
+
 # This is where you implement your solution 
 def convert_coordinates(agents)
+  agents.map do |agent|
+    tmp = agent.split ''
+    # NOTE: ASCII value of 'A' is 65
+    coordinates = [tmp.first.ord - 65, tmp[1..-1].join('').to_i - 1]
+    next if coordinates.max >= DIMENSION
+    coordinates
+    # NOTE: only agents within city bounds
+  end.reject(&:nil?)
 end
 
 def find_safe_spaces(agents)
@@ -12,7 +22,7 @@ end
 
 # Please enable Level 1, 2, 3-Tests by replacing xdescribe with describe!
 # Do not edit the tests itself!
-RSpec.xdescribe 'Spy Places Level 1 - convert coordinates' do
+RSpec.describe 'Spy Places Level 1 - convert coordinates' do
   it 'no agents return empty array' do
     agents = []
     expect(convert_coordinates(agents)).to match_array([])

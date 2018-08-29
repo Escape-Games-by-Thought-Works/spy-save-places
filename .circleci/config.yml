@@ -43,12 +43,12 @@ jobs:
   test-java:
     docker:
       - image: circleci/openjdk:8-jdk-node-browsers
-      steps:
-        - checkout
-        - run:
-            name: Run Tests
-            command: |
-              cd ./java && ./gradlew test
+    steps:
+      - checkout
+      - run:
+          name: Run Tests
+          command: |
+            cd ./java && ./gradlew test
 
 workflows:
   version: 3

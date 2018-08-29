@@ -52,7 +52,7 @@ jobs:
               cd ./java && ./gradlew test
 
 workflows:
-  version: 3
+  version: 2
   build_and_test:
     jobs:
       - test-ruby

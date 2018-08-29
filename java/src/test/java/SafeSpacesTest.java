@@ -13,7 +13,7 @@ public class SafeSpacesTest {
 
     @Before
     public void setup(){
-        objectUnderTest = objectUnderTest;
+        objectUnderTest = new SafeSpaces();
     }
 
     //Level -1 convert coordinates

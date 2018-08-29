@@ -3,7 +3,6 @@ import unittest
 
 from safe_spaces import SafetyFinder
 
-@unittest.skip("Comment or delete this line to solve the challenge with python")
 class SafetyFinderTest(unittest.TestCase):
     """A class that contains the unit tests that adhere to the game spec"""
 

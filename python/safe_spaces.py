@@ -92,10 +92,10 @@ class SafetyFinder:
         return [x_coordinate, y_coordinate]
 
     @staticmethod
-    def _convert_vector_to_alphanumeric_coordinates(coordinate):
+    def _convert_vector_to_alphanumeric_coordinates(vector_coordinates):
         """Convert coordinates in indexed vector form (e.g. [0,5]) to alphanumeric coordinates (e.g. 'A6')"""
-        letter = chr(coordinate[0] + ord('A'))  # Convert number to letter
-        return letter + str(coordinate[1] + 1)
+        letter = chr(vector_coordinates[0] + ord('A'))  # Convert number to letter
+        return letter + str(vector_coordinates[1] + 1)
 
     @staticmethod
     def _calculate_distance(point1, point2):
@@ -114,5 +114,6 @@ class SafetyFinder:
 
     @classmethod
     def _contains_all_locations_in_city(cls, locations):
-        """Check if the given locations are all locations in the city"""
+        """Check if the given locations make up all existing locations in the city.
+        Given locations assumed to be unique and inside the city boundaries."""
         return len(locations) == cls.CITY_SIZE ** 2

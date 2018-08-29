@@ -2,12 +2,13 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.*;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class SafeSpacesTest {
+    final Comparator<int[]> arrayComparator = (o1, o2) -> o1[0] == o2[0] ? o1[1] - o2[1] : o1[0] - o2[0];
 
     SafeSpaces objectUnderTest;
 
@@ -38,7 +39,10 @@ public class SafeSpacesTest {
     public void testSingleCoordinate(){
         String[] agents = {"F3"};
         int[][] coordinates = objectUnderTest.convertCoordinates(agents);
-        assertArrayEquals(new int[][]{{5,2}},coordinates);
+        int[][] expected = {{5, 2}};
+        Arrays.sort(coordinates, arrayComparator);
+        Arrays.sort(expected, arrayComparator);
+        assertArrayEquals(expected,coordinates);
     }
 
     /**
@@ -49,7 +53,10 @@ public class SafeSpacesTest {
     public void testMultipleCoordinates(){
         String[] agents = {"B6","C2","J7"};
         int[][] coordinates = objectUnderTest.convertCoordinates(agents);
-        assertArrayEquals(new int[][]{{1,5},{2,1},{9,6}},coordinates);
+        int[][] expected = {{1, 5}, {2, 1}, {9, 6}};
+        Arrays.sort(coordinates, arrayComparator);
+        Arrays.sort(expected, arrayComparator);
+        assertArrayEquals(expected,coordinates);
     }
 
     /**
@@ -60,7 +67,10 @@ public class SafeSpacesTest {
     public void testDoubleDigits(){
         String[] agents = {"J10"};
         int[][] coordinates = objectUnderTest.convertCoordinates(agents);
-        assertArrayEquals(new int[][]{{9,9}},coordinates);
+        int[][] expected = {{9, 9}};
+        Arrays.sort(coordinates, arrayComparator);
+        Arrays.sort(expected, arrayComparator);
+        assertArrayEquals(expected,coordinates);
     }
 
     //End Level-1 convert coordinates
@@ -75,7 +85,10 @@ public class SafeSpacesTest {
     public void testSafeSpacesRound1(){
         int[][] agents = {{1,1},{3,5},{4,8},{7,3},{7,8},{9,1}};
         int[][] safeSpaces = objectUnderTest.findSafeSpaces(agents);
-        assertArrayEquals(new int[][]{{0,9},{0,7},{5,0}},safeSpaces);
+        int[][] expected = {{0, 9}, {0, 7}, {5, 0}};
+        Arrays.sort(safeSpaces, arrayComparator);
+        Arrays.sort(expected, arrayComparator);
+        assertArrayEquals(expected,safeSpaces);
     }
 
     /**
@@ -86,7 +99,10 @@ public class SafeSpacesTest {
     public void testSafeSpacesRound2(){
         int[][] agents = {{0,0},{0,9},{1,5},{5,1},{9,0},{9,9}};
         int[][] safeSpaces = objectUnderTest.findSafeSpaces(agents);
-        assertArrayEquals(new int[][]{{5,7},{6,6},{7,5}},safeSpaces);
+        int[][] expected = {{5, 7}, {6, 6}, {7, 5}};
+        Arrays.sort(safeSpaces, arrayComparator);
+        Arrays.sort(expected, arrayComparator);
+        assertArrayEquals(expected,safeSpaces);
     }
 
     /**
@@ -97,7 +113,10 @@ public class SafeSpacesTest {
     public void testSafeSpacesRound3(){
         int[][] agents = {{0,0}};
         int[][] safeSpaces = objectUnderTest.findSafeSpaces(agents);
-        assertArrayEquals(new int[][]{{9,9}},safeSpaces);
+        int[][] expected = {{9, 9}};
+        Arrays.sort(safeSpaces, arrayComparator);
+        Arrays.sort(expected, arrayComparator);
+        assertArrayEquals(expected,safeSpaces);
     }
 
     //End Level-2 Find safe spaces in the city based on agent locations

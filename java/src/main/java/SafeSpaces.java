@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * A class to help us find safe locations for Alex
@@ -56,6 +55,7 @@ class SafeSpaces {
         }
 
         public SearchResult(String[] safeLocations) {
+            Arrays.sort(safeLocations);
             this.safeLocations = safeLocations;
         }
 

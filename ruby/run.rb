@@ -2,6 +2,12 @@ require 'rspec'
 
 # This is where you implement your solution 
 def convert_coordinates(agents)
+  agents.map do |agent|
+    x = agent[0]
+    x = (x.ord - 'A'.ord) if x.is_a? String
+    y = agent[1, 2].to_i - 1
+    [x, y]
+  end
 end
 
 def find_safe_spaces(agents)
@@ -12,7 +18,7 @@ end
 
 # Please enable Level 1, 2, 3-Tests by replacing xdescribe with describe!
 # Do not edit the tests itself!
-RSpec.xdescribe 'Spy Places Level 1 - convert coordinates' do
+RSpec.describe 'Spy Places Level 1 - convert coordinates' do
   it 'no agents return empty array' do
     agents = []
     expect(convert_coordinates(agents)).to match_array([])

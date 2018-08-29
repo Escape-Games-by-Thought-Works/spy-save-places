@@ -49,7 +49,7 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            cd ./java && ./gradlew test
+              cd ./java && ./gradlew test
 
 workflows:
   version: 3

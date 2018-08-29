@@ -1,19 +1,50 @@
 require 'rspec'
 
-# This is where you implement your solution 
+# This is where you implement your solution
 def convert_coordinates(agents)
   agents.map do |agent|
-    x = agent[0]
-    x = (x.ord - 'A'.ord) if x.is_a? String
+    x = agent[0].ord - 'A'.ord
     y = agent[1, 2].to_i - 1
     [x, y]
   end
 end
 
 def find_safe_spaces(agents)
+  safe_spaces distance_map(agents)
 end
 
 def advice_for_alex(agents)
+end
+
+SIZE = 10
+MAX_DIST = (2 * SIZE)
+
+def distance_map(agents)
+  d = Array.new(SIZE) { Array.new(SIZE, MAX_DIST) }
+  (0..(SIZE - 1)).each do |x|
+    (0..(SIZE - 1)).each do |y|
+      d_min = agents.map { |agent| dist(agent, x, y) }.min
+      d[x][y] = d_min if d_min < d[x][y]
+    end
+  end
+  d
+end
+
+def dist(agent, col, row)
+  (agent[0] - col).abs + (agent[1] - row).abs
+end
+
+def safe_spaces(distance_map)
+  d_max = distance_map.map(&:max).max
+  return [] if d_max.zero?
+  spaces = []
+  (0..SIZE - 1).each do |x|
+    (0..SIZE - 1).each do |y|
+      next if distance_map[x][y] != d_max
+      spaces << [x, y]
+    end
+  end
+  spaces
 end
 
 # Please enable Level 1, 2, 3-Tests by replacing xdescribe with describe!
@@ -43,7 +74,7 @@ RSpec.describe 'Spy Places Level 1 - convert coordinates' do
   end
 end
 
-RSpec.xdescribe 'Spy Places Level 2 - find save places' do
+RSpec.describe 'Spy Places Level 2 - find save places' do
   it 'some places are save if agents are some' do
     agents =
         [[1, 1], [3, 5], [4, 8], [7, 3], [7, 8], [9, 1]]

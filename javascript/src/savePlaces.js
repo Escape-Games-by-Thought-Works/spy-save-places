@@ -16,7 +16,10 @@ const convertCoordinates = (agents) => {
 const findSafePlaces = (agents) => safeSpaces(distanceMap(agents));
 
 const adviceForAlex = (agents) => {
-  return "adviceForAlex"
+  const spaces = findSafePlaces(convertCoordinates(agents));
+  if (spaces.length == 0) return 'There are no safe locations for Alex! :-(';
+  if (spaces.length == SIZE * SIZE) return 'The whole city is safe for Alex! :-)';
+  return spaces.map(xy => `${String.fromCharCode(xy[0] + 'A'.charCodeAt())}${xy[1] + 1}`);
 };
 
 module.exports = {

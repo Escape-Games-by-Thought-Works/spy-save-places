@@ -2,11 +2,15 @@ require 'rspec'
 
 # This is where you implement your solution
 def convert_coordinates(agents)
-  agents.map do |agent|
+  coords = []
+  agents.each do |agent|
     x = agent[0].ord - 'A'.ord
+    next if x < 0 || x >= SIZE
     y = agent[1, 2].to_i - 1
-    [x, y]
+    next if y < 0 || y >= SIZE
+    coords << [x, y]
   end
+  coords
 end
 
 def find_safe_spaces(agents)
@@ -14,6 +18,10 @@ def find_safe_spaces(agents)
 end
 
 def advice_for_alex(agents)
+  spaces = find_safe_spaces convert_coordinates(agents)
+  return 'There are no safe locations for Alex! :-(' if spaces.empty?
+  return 'The whole city is safe for Alex! :-)' if spaces.length == SIZE * SIZE
+  spaces.map { |xy| "#{(xy[0] + 'A'.ord).chr}#{xy[1] + 1}" }
 end
 
 SIZE = 10
@@ -21,6 +29,7 @@ MAX_DIST = (2 * SIZE)
 
 def distance_map(agents)
   d = Array.new(SIZE) { Array.new(SIZE, MAX_DIST) }
+  return d if agents.empty?
   (0..(SIZE - 1)).each do |x|
     (0..(SIZE - 1)).each do |y|
       d_min = agents.map { |agent| dist(agent, x, y) }.min
@@ -92,7 +101,7 @@ RSpec.describe 'Spy Places Level 2 - find save places' do
   end
 end
 
-RSpec.xdescribe 'Spy Places Level 3 - find edge cases and give advice to Alex' do
+RSpec.describe 'Spy Places Level 3 - find edge cases and give advice to Alex' do
   it 'expects all save places at no agents' do
     agents = []
     expect(advice_for_alex(agents)).to eq('The whole city is safe for Alex! :-)')

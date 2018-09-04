@@ -1,7 +1,7 @@
 """Run unittests for the ThoughtWorks spy game"""
 import unittest
 
-from safe_spaces import SafetyFinder
+from safe_spaces import SafetyFinder, Board
 
 
 class SafetyFinderTest(unittest.TestCase):
@@ -113,6 +113,68 @@ class SafetyFinderTest(unittest.TestCase):
         agents = ['A12']
         self.assertEqual(SafetyFinder().advice_for_alex(agents),
                          'The whole city is safe for Alex! :-)')
+
+
+class BoardTest(unittest.TestCase):
+    def test_board_dimensions_are_correct(self):
+        sut = Board()
+        self.assertEqual(len(sut.data), 10)
+        self.assertEqual(len(sut.data[0]), 10)
+        self.assertIsNone(sut.data[0][9])
+
+    def test_agents_are_correctly_placed_and_stored_as_new(self):
+        sut = Board()
+        agents = [[0, 0], [3, 4]]
+        sut.place_agents(agents)
+
+        self.assertEqual(sut._get(agents[0]), 0)
+        self.assertEqual(sut._get(agents[1]), 0)
+
+        self.assertEqual(sut.changed_positions, agents)
+
+    def test_all_coordinates_returned_as_neighbors_for_central_coordinate(self):
+        result = Board.get_neighbors_for([5, 5])
+        self.assertEqual(len(result), 8)
+
+        self.assertIn([4, 4], result)  # northwest
+        self.assertIn([4, 5], result)  # west
+        self.assertIn([4, 6], result)  # southwest
+
+        self.assertIn([5, 4], result)  # north
+        self.assertIn([5, 6], result)  # south
+
+        self.assertIn([6, 4], result)  # northeast
+        self.assertIn([6, 5], result)  # east
+        self.assertIn([6, 6], result)  # southeast
+
+    def test_no_west_coordinates_are_returned_for_left_column(self):
+        result = Board.get_neighbors_for([0, 5])
+        self.assertEqual(len(result), 5)
+
+        self.assertIn([0, 4], result)  # north
+        self.assertIn([0, 6], result)  # south
+
+        self.assertIn([1, 4], result)  # northeast
+        self.assertIn([1, 5], result)  # east
+        self.assertIn([1, 6], result)  # southeast
+
+    def test_corner_coordinate_has_only_three_neighbors(self):
+        result = Board.get_neighbors_for([9, 9])
+        self.assertEqual(len(result), 3)
+
+        self.assertIn([8, 9], result)  # west
+        self.assertIn([8, 8], result)  # southwest
+
+        self.assertIn([9, 8], result)  # south
+
+    def test_changed_position_are_cleared_after_taking(self):
+        sut = Board()
+        sut._set([5, 5], 3)
+        positions = sut.take_changed_positions()
+        self.assertIn([5, 5], positions)
+
+        new_positions = sut.take_changed_positions()
+        self.assertEqual(len(new_positions), 0)
 
 
 if __name__ == '__main__':

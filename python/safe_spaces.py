@@ -1,5 +1,90 @@
 """Solve the spy game!"""
-from typing import List, Union, Optional
+from typing import List, Optional
+
+
+class Board:
+    __DIMENSIONS = 10
+
+    def __init__(self):
+        # Data will be a nxn matrix that hold the distance to the nearest agent, or None if it has not yet been computed
+        self.data = []
+        for i in range(0, Board.__DIMENSIONS):
+            this_row = [None] * Board.__DIMENSIONS
+            self.data.append(this_row)
+
+        self.changed_positions = []
+
+    def place_agents(self, agents: List[List[int]]):
+        """ Place the initial agents. """
+        for this_agent in agents:
+            self._set(this_agent, value=0)
+
+    def _set(self, field: List[int], value: int):
+        x, y = field[0], field[1]
+        self.data[x][y] = value
+        self.changed_positions.append(field)
+
+    def _get(self, field: List[int]):
+        x, y = field[0], field[1]
+        return self.data[x][y]
+
+    def has_changed(self):
+        return len(self.changed_positions) == 0
+
+    def take_changed_positions(self):
+        result = self.changed_positions
+        self.changed_positions = []
+        return result
+
+    @staticmethod
+    def get_neighbors_for(coord: List[int]):
+        """ Returns the coordinates of the neighbours of a field. """
+        result = []
+        x, y = coord[0], coord[1]
+
+        is_top_row = (y == 0)
+        is_bottom_row = (y == (Board.__DIMENSIONS-1))
+        is_left_column = (x == 0)
+        is_right_column = (x == (Board.__DIMENSIONS-1))
+
+        # we use directions for simpler assignment
+        # northwest
+        if not is_left_column:
+            if not is_top_row:
+                result.append([x-1, y-1])
+
+        # north
+        if not is_top_row:
+            result.append([x, y-1])
+
+        # northeast
+        if not is_right_column:
+            if not is_top_row:
+                result.append([x+1, y-1])
+
+        # east
+        if not is_right_column:
+            result.append([x + 1, y])
+
+        # southeast
+        if not is_bottom_row:
+            if not is_right_column:
+                result.append([x+1, y+1])
+
+        # south
+        if not is_bottom_row:
+            result.append([x, y+1])
+
+        # southwest
+        if not is_left_column:
+            if not is_bottom_row:
+                result.append([x-1, y+1])
+
+        # west
+        if not is_left_column:
+            result.append([x-1, y])
+
+        return result
 
 
 class SafetyFinder:

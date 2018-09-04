@@ -1,4 +1,5 @@
 """Solve the spy game!"""
+import sys
 from typing import List, Optional
 
 
@@ -7,33 +8,36 @@ class Board:
 
     def __init__(self):
         # Data will be a nxn matrix that hold the distance to the nearest agent, or None if it has not yet been computed
-        self.data = []
+        self._data = []
         for i in range(0, Board.__DIMENSIONS):
             this_row = [None] * Board.__DIMENSIONS
-            self.data.append(this_row)
+            self._data.append(this_row)
 
-        self.changed_positions = []
+        self.changed_fields = list()
 
     def place_agents(self, agents: List[List[int]]):
         """ Place the initial agents. """
         for this_agent in agents:
-            self._set(this_agent, value=0)
+            self.set_distance_to_agent(this_agent, value=0)
 
-    def _set(self, field: List[int], value: int):
+    def set_distance_to_agent(self, field: List[int], value: int):
         x, y = field[0], field[1]
-        self.data[x][y] = value
-        self.changed_positions.append(field)
+        if self._data[x][y] != value:
+            self._data[x][y] = value
+            if field not in self.changed_fields:
+                self.changed_fields.append(field)
 
-    def _get(self, field: List[int]):
+    def get_distance_to_agent_for(self, field: List[int]) -> Optional[int]:
+        """ Returns the distance to the nearest agent, or None if tha thas not yet been calculated. """
         x, y = field[0], field[1]
-        return self.data[x][y]
+        return self._data[x][y]
 
     def has_changed(self):
-        return len(self.changed_positions) == 0
+        return len(self.changed_fields) == 0
 
-    def take_changed_positions(self):
-        result = self.changed_positions
-        self.changed_positions = []
+    def take_changed_fields(self) -> List[List[int]]:
+        result = self.changed_fields
+        self.changed_fields = list()
         return result
 
     @staticmethod
@@ -43,24 +47,24 @@ class Board:
         x, y = coord[0], coord[1]
 
         is_top_row = (y == 0)
-        is_bottom_row = (y == (Board.__DIMENSIONS-1))
+        is_bottom_row = (y == (Board.__DIMENSIONS - 1))
         is_left_column = (x == 0)
-        is_right_column = (x == (Board.__DIMENSIONS-1))
+        is_right_column = (x == (Board.__DIMENSIONS - 1))
 
         # we use directions for simpler assignment
         # northwest
         if not is_left_column:
             if not is_top_row:
-                result.append([x-1, y-1])
+                result.append([x - 1, y - 1])
 
         # north
         if not is_top_row:
-            result.append([x, y-1])
+            result.append([x, y - 1])
 
         # northeast
         if not is_right_column:
             if not is_top_row:
-                result.append([x+1, y-1])
+                result.append([x + 1, y - 1])
 
         # east
         if not is_right_column:
@@ -69,20 +73,20 @@ class Board:
         # southeast
         if not is_bottom_row:
             if not is_right_column:
-                result.append([x+1, y+1])
+                result.append([x + 1, y + 1])
 
         # south
         if not is_bottom_row:
-            result.append([x, y+1])
+            result.append([x, y + 1])
 
         # southwest
         if not is_left_column:
             if not is_bottom_row:
-                result.append([x-1, y+1])
+                result.append([x - 1, y + 1])
 
         # west
         if not is_left_column:
-            result.append([x-1, y])
+            result.append([x - 1, y])
 
         return result
 
@@ -111,7 +115,7 @@ class SafetyFinder:
         for agent in agents:
             letter_coord = SafetyFinder._letter_to_coordinate(agent[0])
             number = int(agent[1:])
-            result.append([letter_coord, number-1])
+            result.append([letter_coord, number - 1])
 
         return result
 

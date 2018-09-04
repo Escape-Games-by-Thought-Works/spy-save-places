@@ -200,6 +200,12 @@ class BoardTest(unittest.TestCase):
         self.assertIn([5, 8], result)
         self.assertIn([2, 2], result)
 
+    def test_board_is_changed_after_setting_a_value(self):
+        sut = Board()
+        self.assertFalse(sut.has_changed())
+        sut.set_distance_to_agent([3, 3], 3)
+        self.assertTrue(sut.has_changed())
+
 
 class CalculationTest(unittest.TestCase):
     def test_changed_fields_are_ignored(self):

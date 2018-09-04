@@ -33,7 +33,7 @@ class Board:
         return self._data[x][y]
 
     def has_changed(self):
-        return len(self.changed_fields) == 0
+        return len(self.changed_fields) > 0
 
     def take_changed_fields(self) -> List[List[int]]:
         result = self.changed_fields

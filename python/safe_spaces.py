@@ -223,4 +223,5 @@ def _calculate_safe_places(board: Board, agents: List[List[int]]):
 
         for field in fields_to_recalculate:
             min_value = _get_minimum_distance_of_neighbors(board, field)
-            board.set_distance_to_agent(field, min_value + 1)
+            if board.get_distance_to_agent_for(field) is None or min_value < board.get_distance_to_agent_for(field):
+                board.set_distance_to_agent(field, min_value + 1)

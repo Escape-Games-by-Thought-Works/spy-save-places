@@ -1,6 +1,6 @@
 """Solve the spy game!"""
 import sys
-from typing import List, Optional
+from typing import List, Optional, Union
 
 ALLOWED_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 
@@ -181,7 +181,7 @@ class SafetyFinder:
         _calculate_safe_places(board, agents)
         return board.find_safe_places()
 
-    def advice_for_alex(self, agents):
+    def advice_for_alex(self, agents: List[str]) -> Union[str, List[str]]:
         """This method will take an array with agent locations and offer advice
         to Alex for where she should hide out in the city, with special advice for
         edge cases.
@@ -193,7 +193,13 @@ class SafetyFinder:
         Returns either a list of alphanumeric map coordinates for Alex to hide in,
         or a specialized message informing her of edge cases
         """
-        pass
+        if len(agents) == 0:
+            return "The whole city is safe for Alex! :-)"
+        if len(agents) == Board().nof_fields():
+            return "There are no safe locations for Alex! :-("
+        fields = self.convert_coordinates(agents)
+        safe_places = self.find_safe_spaces(fields)
+        return list(map(lambda x: SafetyFinder._field_to_text(x), safe_places))
 
 
 def _collect_neighbours_of_changed_fields(changed_fields: List[List[int]]) -> List[List[int]]:

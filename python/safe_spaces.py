@@ -173,7 +173,9 @@ class SafetyFinder:
 
         Returns a list of safe spaces in indexed vector form.
         """
-        pass
+        board = Board()
+        _calculate_safe_places(board, agents)
+        return board.find_safe_places()
 
     def advice_for_alex(self, agents):
         """This method will take an array with agent locations and offer advice
@@ -211,7 +213,7 @@ def _get_minimum_distance_of_neighbors(board: Board, field: List[int]) -> int:
     return min_value
 
 
-def calculate(board: Board, agents: List[List[int]]):
+def _calculate_safe_places(board: Board, agents: List[List[int]]):
     """ Calculate the distances on the board. """
     board.place_agents(agents)
 

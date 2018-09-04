@@ -236,3 +236,12 @@ def _get_minimum_distance_of_neighbors(board: Board, field: List[int]) -> int:
             min_value = min(distance, min_value)
     assert min_value != sys.maxsize
     return min_value
+
+
+if __name__ == "__main__":
+    arguments = sys.argv[1:]
+    result = SafetyFinder().advice_for_alex(arguments)
+    if type(result) == str:
+        print(result)
+    elif type(result) == list:
+        print(" ".join(result))

@@ -2,10 +2,9 @@
 import sys
 from typing import List, Optional, Union
 
-ALLOWED_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-
 
 class Board:
+    """ This represents the board on which the agents and Alex will be placed. """
     __DIMENSIONS = 10
 
     def __init__(self):
@@ -18,7 +17,7 @@ class Board:
         self.changed_fields = list()
 
     def place_agents(self, agents: List[List[int]]):
-        """ Place the initial agents. """
+        """ Place the initial agents on the board. """
         for this_agent in agents:
             self.set_distance_to_agent(this_agent, value=0)
 
@@ -30,20 +29,23 @@ class Board:
                 self.changed_fields.append(field)
 
     def get_distance_to_agent_for(self, field: List[int]) -> Optional[int]:
-        """ Returns the distance to the nearest agent, or None if tha thas not yet been calculated. """
+        """ Returns the distance to the nearest agent, or None if that has not yet been calculated. """
         x, y = field[0], field[1]
         return self._data[x][y]
 
     def has_changed(self):
+        """ Check whether any fields have changed since the last time take_changed_fields was called. """
         return len(self.changed_fields) > 0
 
     def take_changed_fields(self) -> List[List[int]]:
+        """ Take the list of changed fields. The original list will be reset. """
         result = self.changed_fields
         self.changed_fields = list()
         return result
 
     def find_safe_places(self) -> List[List[int]]:
-        """ Find the safe places. Make sure that you have calculated the distances to the agents first. """
+        """ Find the safe places, i.e., the fields which have the maximal distance to an agent.
+        Make sure that you have calculated the distances to the agents first. """
         result = list()
         max_value = 0
         for x in range(0, Board.__DIMENSIONS):
@@ -98,6 +100,8 @@ class SafetyFinder:
     safest places in the city for Alex to hide out
     """
 
+    ALLOWED_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+
     def convert_coordinates(self, agents: List[str]) -> List[List[int]]:
         """This method should take a list of alphanumeric coordinates (e.g. 'A6')
         and return an array of the coordinates converted to arrays with zero-indexing.
@@ -125,20 +129,21 @@ class SafetyFinder:
     def _letter_to_coordinate(letter: str) -> Optional[int]:
         """ Converts a letter to a coordinate. Returns None when the letter is not a valid input. """
         try:
-            coordinate = ALLOWED_LETTERS.index(letter)
+            coordinate = SafetyFinder.ALLOWED_LETTERS.index(letter)
             return coordinate
         except ValueError:
             return None
 
     @staticmethod
-    def _input_is_valid(input: str) -> bool:
-        if len(input) < 2:
+    def _input_is_valid(value: str) -> bool:
+        """ Checks whether the provided value is a valid coordinate. """
+        if len(value) < 2:
             return False
-        letter = input[0]
+        letter = value[0]
         letter_coord = SafetyFinder._letter_to_coordinate(letter)
         if letter_coord is None:
             return False
-        number_str = input[1:]
+        number_str = value[1:]
         if not number_str.isdigit():
             return False
         number_int = int(number_str)
@@ -148,6 +153,7 @@ class SafetyFinder:
 
     @staticmethod
     def _text_to_field(text: str):
+        """ Converts an input to coordinates. """
         letter_coord = SafetyFinder._letter_to_coordinate(text[0])
         assert letter_coord is not None, "Input was checked."
         number = int(text[1:])
@@ -158,11 +164,11 @@ class SafetyFinder:
     def _field_to_text(field: List[int]):
         """ Converts a field on the board to the corresponding text. Will raise a ValueError when the field is
         out of the range of the allowed values. """
-        if field[0] > len(ALLOWED_LETTERS):
+        if field[0] > len(SafetyFinder.ALLOWED_LETTERS):
             raise ValueError("Bad letter in '{field}'")
         if field[1] > 9:
             raise ValueError("Bad number in '{field}'")
-        return ALLOWED_LETTERS[field[0]] + str(field[1]+1)
+        return SafetyFinder.ALLOWED_LETTERS[field[0]] + str(field[1]+1)
 
     def find_safe_spaces(self, agents):
         """This method will take an array with agent locations and find
@@ -176,7 +182,18 @@ class SafetyFinder:
         Returns a list of safe spaces in indexed vector form.
         """
         board = Board()
-        _calculate_safe_places(board, agents)
+
+        board.place_agents(agents)
+
+        while board.has_changed():
+            changed_fields = board.take_changed_fields()
+            fields_to_recalculate = _collect_neighbours_of_changed_fields(changed_fields)
+
+            for field in fields_to_recalculate:
+                min_value = _get_minimum_distance_of_neighbors(board, field)
+                if board.get_distance_to_agent_for(field) is None or min_value < board.get_distance_to_agent_for(field):
+                    board.set_distance_to_agent(field, min_value + 1)
+
         return board.find_safe_places()
 
     def advice_for_alex(self, agents: List[str]) -> Union[str, List[str]]:
@@ -219,17 +236,3 @@ def _get_minimum_distance_of_neighbors(board: Board, field: List[int]) -> int:
             min_value = min(distance, min_value)
     assert min_value != sys.maxsize
     return min_value
-
-
-def _calculate_safe_places(board: Board, agents: List[List[int]]):
-    """ Calculate the distances on the board. """
-    board.place_agents(agents)
-
-    while board.has_changed():
-        changed_fields = board.take_changed_fields()
-        fields_to_recalculate = _collect_neighbours_of_changed_fields(changed_fields)
-
-        for field in fields_to_recalculate:
-            min_value = _get_minimum_distance_of_neighbors(board, field)
-            if board.get_distance_to_agent_for(field) is None or min_value < board.get_distance_to_agent_for(field):
-                board.set_distance_to_agent(field, min_value + 1)

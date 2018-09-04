@@ -16,6 +16,12 @@ class SafetyFinderTest(unittest.TestCase):
         self.assertRaises(ValueError, SafetyFinder().convert_coordinates, ["A11"])
         self.assertRaises(ValueError, SafetyFinder().convert_coordinates, ["A1A"])
 
+    def test_coordinate_to_text(self):
+        self.assertEqual(SafetyFinder._field_to_text([0, 0]), "A1")
+        self.assertEqual(SafetyFinder._field_to_text([9, 9]), "J10")
+        self.assertEqual(SafetyFinder._field_to_text([2, 4]), "C5")
+
+
     # Level 1 -- Test for conversion from alphanumeric coordinates to vectors
     def test_empty_coordinates(self):
         """Test that the code adequately handles empty lists
@@ -194,11 +200,6 @@ class BoardTest(unittest.TestCase):
         self.assertFalse(sut.has_changed())
         sut.set_distance_to_agent([3, 3], 3)
         self.assertTrue(sut.has_changed())
-
-    def test_coordinate_to_text(self):
-        self.assertEqual(Board._field_to_text([0, 0]), "A1")
-        self.assertEqual(Board._field_to_text([9, 9]), "J10")
-        self.assertEqual(Board._field_to_text([2, 4]), "C5")
 
 
 class CalculationTest(unittest.TestCase):

@@ -92,14 +92,6 @@ class Board:
     def nof_fields(self) -> int:
         return self.__DIMENSIONS * self.__DIMENSIONS
 
-    @staticmethod
-    def _field_to_text(field: List[int]):
-        if field[0] > len(ALLOWED_LETTERS):
-            raise ValueError("Bad letter in '{field}'")
-        if field[1] > 9:
-            raise ValueError("Bad number in '{field}'")
-        return ALLOWED_LETTERS[field[0]] + str(field[1]+1)
-
 
 class SafetyFinder:
     """A class that contains everything we need to find the
@@ -155,6 +147,24 @@ class SafetyFinder:
             number_int = int(number_str)
             if number_int <= 0 or number_int > 10:
                 raise ValueError(f"Second part of '{agent}' must be a number between 1 and 10")
+
+    @staticmethod
+    def _text_to_field(text: str):
+        letter_coord = SafetyFinder._letter_to_coordinate(text[0])
+        assert letter_coord is not None, "Input was checked."
+        number = int(text[1:])
+        # subtract 1 to get 0-based coordinates
+        return [letter_coord, number - 1]
+
+    @staticmethod
+    def _field_to_text(field: List[int]):
+        """ Converts a field on the board to the corresponding text. Will raise a ValueError when the field is
+        out of the range of the allowed values. """
+        if field[0] > len(ALLOWED_LETTERS):
+            raise ValueError("Bad letter in '{field}'")
+        if field[1] > 9:
+            raise ValueError("Bad number in '{field}'")
+        return ALLOWED_LETTERS[field[0]] + str(field[1]+1)
 
     def find_safe_spaces(self, agents):
         """This method will take an array with agent locations and find

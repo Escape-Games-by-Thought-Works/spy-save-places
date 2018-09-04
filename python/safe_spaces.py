@@ -168,3 +168,37 @@ class SafetyFinder:
         or a specialized message informing her of edge cases
         """
         pass
+
+
+def _collect_neighbours_of_changed_fields(changed_fields: List[List[int]]) -> List[List[int]]:
+    result = list()
+    for this_field in changed_fields:
+        fields_to_check = Board.get_neighbors_for(this_field)
+        for neighbor in fields_to_check:
+            if neighbor not in result and neighbor not in changed_fields:
+                result.append(neighbor)
+    return result
+
+
+def _get_minimum_distance_of_neighbors(board: Board, field: List[int]) -> int:
+    all_neighbors = Board.get_neighbors_for(field)
+    min_value = sys.maxsize
+    for neighbor in all_neighbors:
+        distance = board.get_distance_to_agent_for(neighbor)
+        if distance is not None:
+            min_value = min(distance, min_value)
+    assert min_value != sys.maxsize
+    return min_value
+
+
+def calculate(board: Board, agents: List[List[int]]):
+    """ Calculate the distances on the board. """
+    board.place_agents(agents)
+
+    while board.has_changed():
+        changed_fields = board.take_changed_fields()
+        fields_to_recalculate = _collect_neighbours_of_changed_fields(changed_fields)
+
+        for field in fields_to_recalculate:
+            min_value = _get_minimum_distance_of_neighbors(board, field)
+            board.set_distance_to_agent(field, min_value + 1)

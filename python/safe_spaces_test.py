@@ -1,6 +1,7 @@
 """Run unittests for the ThoughtWorks spy game"""
 import unittest
 
+import safe_spaces
 from safe_spaces import SafetyFinder, Board
 
 
@@ -118,19 +119,19 @@ class SafetyFinderTest(unittest.TestCase):
 class BoardTest(unittest.TestCase):
     def test_board_dimensions_are_correct(self):
         sut = Board()
-        self.assertEqual(len(sut.data), 10)
-        self.assertEqual(len(sut.data[0]), 10)
-        self.assertIsNone(sut.data[0][9])
+        self.assertEqual(len(sut._data), 10)
+        self.assertEqual(len(sut._data[0]), 10)
+        self.assertIsNone(sut._data[0][9])
 
     def test_agents_are_correctly_placed_and_stored_as_new(self):
         sut = Board()
         agents = [[0, 0], [3, 4]]
         sut.place_agents(agents)
 
-        self.assertEqual(sut._get(agents[0]), 0)
-        self.assertEqual(sut._get(agents[1]), 0)
+        self.assertEqual(sut.get_distance_to_agent_for(agents[0]), 0)
+        self.assertEqual(sut.get_distance_to_agent_for(agents[1]), 0)
 
-        self.assertEqual(sut.changed_positions, agents)
+        self.assertEqual(sut.changed_fields, agents)
 
     def test_all_coordinates_returned_as_neighbors_for_central_coordinate(self):
         result = Board.get_neighbors_for([5, 5])
@@ -169,12 +170,33 @@ class BoardTest(unittest.TestCase):
 
     def test_changed_position_are_cleared_after_taking(self):
         sut = Board()
-        sut._set([5, 5], 3)
-        positions = sut.take_changed_positions()
+        sut.set_distance_to_agent([5, 5], 3)
+        positions = sut.take_changed_fields()
         self.assertIn([5, 5], positions)
 
-        new_positions = sut.take_changed_positions()
+        new_positions = sut.take_changed_fields()
         self.assertEqual(len(new_positions), 0)
+
+
+class CalculationTest(unittest.TestCase):
+    def test_changed_fields_are_ignored(self):
+        """ Tests that we do not have the changed fields as candidates for re-calculation. """
+        result = safe_spaces._collect_neighbours_of_changed_fields([[4, 5], [5, 5]])
+        self.assertEqual(len(result), 10)
+
+    def test_duplicate_neighbours_are_merged(self):
+        result = safe_spaces._collect_neighbours_of_changed_fields([[4, 5], [6, 5]])
+        self.assertEqual(len(result), 13)
+
+    def test_minimum_value_is_found(self):
+        sut = Board()
+        sut.set_distance_to_agent([5, 5], 3)
+        sut.set_distance_to_agent([5, 6], 4)
+        sut.set_distance_to_agent([5, 7], 5)
+        sut.set_distance_to_agent([3, 3], 1)
+
+        result = safe_spaces._get_minimum_distance_of_neighbors(sut, [4, 6])
+        self.assertEqual(result, 3)
 
 
 if __name__ == '__main__':

@@ -111,9 +111,9 @@ class SafetyFinder:
         Raises:
             ValueError when the coordinates are not in the correct format.
         """
-        self._raise_if_input_coordinates_are_bad(agents)
-        result = []
+        agents = filter(lambda x: SafetyFinder._input_is_valid(x), agents)
 
+        result = []
         for agent in agents:
             letter_coord = SafetyFinder._letter_to_coordinate(agent[0])
             number = int(agent[1:])
@@ -131,22 +131,20 @@ class SafetyFinder:
             return None
 
     @staticmethod
-    def _raise_if_input_coordinates_are_bad(agents):
-        if agents is None:
-            raise TypeError("agents is None")
-        for agent in agents:
-            if len(agent) < 2:
-                raise ValueError(f"Coordinate '{agent}' is not in the form [A-J][1-10]")
-            letter = agent[0]
-            letter_coord = SafetyFinder._letter_to_coordinate(letter)
-            if letter_coord is None:
-                raise ValueError(f"First part of '{agent}' must an uppercase letter between A and J")
-            number_str = agent[1:]
-            if not number_str.isdigit():
-                raise ValueError(f"Second part of '{agent}' must be a number")
-            number_int = int(number_str)
-            if number_int <= 0 or number_int > 10:
-                raise ValueError(f"Second part of '{agent}' must be a number between 1 and 10")
+    def _input_is_valid(input: str) -> bool:
+        if len(input) < 2:
+            return False
+        letter = input[0]
+        letter_coord = SafetyFinder._letter_to_coordinate(letter)
+        if letter_coord is None:
+            return False
+        number_str = input[1:]
+        if not number_str.isdigit():
+            return False
+        number_int = int(number_str)
+        if number_int <= 0 or number_int > 10:
+            return False
+        return True
 
     @staticmethod
     def _text_to_field(text: str):
@@ -193,11 +191,11 @@ class SafetyFinder:
         Returns either a list of alphanumeric map coordinates for Alex to hide in,
         or a specialized message informing her of edge cases
         """
-        if len(agents) == 0:
-            return "The whole city is safe for Alex! :-)"
-        if len(agents) == Board().nof_fields():
-            return "There are no safe locations for Alex! :-("
         fields = self.convert_coordinates(agents)
+        if len(fields) == 0:
+            return "The whole city is safe for Alex! :-)"
+        if len(fields) == Board().nof_fields():
+            return "There are no safe locations for Alex! :-("
         safe_places = self.find_safe_spaces(fields)
         return list(map(lambda x: SafetyFinder._field_to_text(x), safe_places))
 

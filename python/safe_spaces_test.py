@@ -3,9 +3,17 @@ import unittest
 
 from safe_spaces import SafetyFinder
 
-@unittest.skip("Comment or delete this line to solve the challenge with python")
+
 class SafetyFinderTest(unittest.TestCase):
     """A class that contains the unit tests that adhere to the game spec"""
+
+    def test_convert_coordinates_does_not_accept_coordinates_with_bad_format(self):
+        self.assertRaises(ValueError, SafetyFinder().convert_coordinates, ["12"])
+        self.assertRaises(ValueError, SafetyFinder().convert_coordinates, ["a2"])
+        self.assertRaises(ValueError, SafetyFinder().convert_coordinates, ["AA"])
+        self.assertRaises(ValueError, SafetyFinder().convert_coordinates, ["A0"])
+        self.assertRaises(ValueError, SafetyFinder().convert_coordinates, ["A11"])
+        self.assertRaises(ValueError, SafetyFinder().convert_coordinates, ["A1A"])
 
     # Level 1 -- Test for conversion from alphanumeric coordinates to vectors
     def test_empty_coordinates(self):

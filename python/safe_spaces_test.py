@@ -195,6 +195,11 @@ class BoardTest(unittest.TestCase):
         sut.set_distance_to_agent([3, 3], 3)
         self.assertTrue(sut.has_changed())
 
+    def test_coordinate_to_text(self):
+        self.assertEqual(Board._field_to_text([0, 0]), "A1")
+        self.assertEqual(Board._field_to_text([9, 9]), "J10")
+        self.assertEqual(Board._field_to_text([2, 4]), "C5")
+
 
 class CalculationTest(unittest.TestCase):
     def test_changed_fields_are_ignored(self):

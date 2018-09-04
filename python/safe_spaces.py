@@ -68,37 +68,18 @@ class Board:
         is_right_column = (x == (Board.__DIMENSIONS - 1))
 
         # we use directions for simpler assignment
-        # northwest
-        if not is_left_column:
-            if not is_top_row:
-                result.append([x - 1, y - 1])
 
         # north
         if not is_top_row:
             result.append([x, y - 1])
 
-        # northeast
-        if not is_right_column:
-            if not is_top_row:
-                result.append([x + 1, y - 1])
-
         # east
         if not is_right_column:
             result.append([x + 1, y])
 
-        # southeast
-        if not is_bottom_row:
-            if not is_right_column:
-                result.append([x + 1, y + 1])
-
         # south
         if not is_bottom_row:
             result.append([x, y + 1])
-
-        # southwest
-        if not is_left_column:
-            if not is_bottom_row:
-                result.append([x - 1, y + 1])
 
         # west
         if not is_left_column:

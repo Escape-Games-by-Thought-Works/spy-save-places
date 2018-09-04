@@ -135,37 +135,26 @@ class BoardTest(unittest.TestCase):
 
     def test_all_coordinates_returned_as_neighbors_for_central_coordinate(self):
         result = Board.get_neighbors_for([5, 5])
-        self.assertEqual(len(result), 8)
+        self.assertEqual(len(result), 4)
 
-        self.assertIn([4, 4], result)  # northwest
         self.assertIn([4, 5], result)  # west
-        self.assertIn([4, 6], result)  # southwest
-
         self.assertIn([5, 4], result)  # north
         self.assertIn([5, 6], result)  # south
-
-        self.assertIn([6, 4], result)  # northeast
         self.assertIn([6, 5], result)  # east
-        self.assertIn([6, 6], result)  # southeast
 
     def test_no_west_coordinates_are_returned_for_left_column(self):
         result = Board.get_neighbors_for([0, 5])
-        self.assertEqual(len(result), 5)
+        self.assertEqual(len(result), 3)
 
         self.assertIn([0, 4], result)  # north
         self.assertIn([0, 6], result)  # south
-
-        self.assertIn([1, 4], result)  # northeast
         self.assertIn([1, 5], result)  # east
-        self.assertIn([1, 6], result)  # southeast
 
-    def test_corner_coordinate_has_only_three_neighbors(self):
+    def test_corner_coordinate_has_only_two_neighbors(self):
         result = Board.get_neighbors_for([9, 9])
-        self.assertEqual(len(result), 3)
+        self.assertEqual(len(result), 2)
 
         self.assertIn([8, 9], result)  # west
-        self.assertIn([8, 8], result)  # southwest
-
         self.assertIn([9, 8], result)  # south
 
     def test_changed_position_are_cleared_after_taking(self):
@@ -211,11 +200,11 @@ class CalculationTest(unittest.TestCase):
     def test_changed_fields_are_ignored(self):
         """ Tests that we do not have the changed fields as candidates for re-calculation. """
         result = safe_spaces._collect_neighbours_of_changed_fields([[4, 5], [5, 5]])
-        self.assertEqual(len(result), 10)
+        self.assertEqual(len(result), 6)
 
     def test_duplicate_neighbours_are_merged(self):
         result = safe_spaces._collect_neighbours_of_changed_fields([[4, 5], [6, 5]])
-        self.assertEqual(len(result), 13)
+        self.assertEqual(len(result), 7)
 
     def test_minimum_value_is_found(self):
         sut = Board()
@@ -225,7 +214,7 @@ class CalculationTest(unittest.TestCase):
         sut.set_distance_to_agent([3, 3], 1)
 
         result = safe_spaces._get_minimum_distance_of_neighbors(sut, [4, 6])
-        self.assertEqual(result, 3)
+        self.assertEqual(result, 4)
 
 
 if __name__ == '__main__':

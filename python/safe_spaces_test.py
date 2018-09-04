@@ -177,6 +177,29 @@ class BoardTest(unittest.TestCase):
         new_positions = sut.take_changed_fields()
         self.assertEqual(len(new_positions), 0)
 
+    def test_one_safe_place_is_found(self):
+        sut = Board()
+
+        sut.set_distance_to_agent([0, 0], 5)
+        sut.set_distance_to_agent([0, 1], 5)
+        sut.set_distance_to_agent([5, 3], 8)
+
+        result = sut.find_safe_places()
+        self.assertEqual(result, [[5, 3]])
+
+    def test_two_safe_places_are_found(self):
+        sut = Board()
+
+        sut.set_distance_to_agent([0, 0], 7)
+        sut.set_distance_to_agent([0, 1], 4)
+        sut.set_distance_to_agent([2, 2], 8)
+        sut.set_distance_to_agent([5, 8], 8)
+
+        result = sut.find_safe_places()
+        self.assertEqual(len(result), 2)
+        self.assertIn([5, 8], result)
+        self.assertIn([2, 2], result)
+
 
 class CalculationTest(unittest.TestCase):
     def test_changed_fields_are_ignored(self):

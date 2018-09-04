@@ -40,6 +40,22 @@ class Board:
         self.changed_fields = list()
         return result
 
+    def find_safe_places(self) -> List[List[int]]:
+        """ Find the safe places. Make sure that you have calculated the distances to the agents first. """
+        result = list()
+        max_value = 0
+        for x in range(0, Board.__DIMENSIONS):
+            for y in range(0, Board.__DIMENSIONS):
+                value = self._data[x][y]
+                if value is None:
+                    continue
+                if value > max_value:
+                    max_value = value
+                    result = [[x, y]]
+                elif value == max_value:
+                    result.append([x, y])
+        return result
+
     @staticmethod
     def get_neighbors_for(coord: List[int]):
         """ Returns the coordinates of the neighbours of a field. """

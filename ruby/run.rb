@@ -16,7 +16,6 @@ end
 def find_safe_spaces(agents)
   map = map_with(agents)
   map = distance_map_of(map, agents)
-  puts map.map { |a| a.map { |i| i.to_s.rjust(3) }.join }
 
   max_distance_positions_of(map)
 end
@@ -102,7 +101,7 @@ RSpec.describe 'Spy Places Level 3 - find edge cases and give advice to Alex' do
     expect(advice_for_alex(agents)).to eq('There are no safe locations for Alex! :-(')
   end
 
-  it 'some places are save if agents are some', focus: true do
+  it 'some places are save if agents are some' do
     agents =
         ['B2', 'D6', 'E9', 'H4', 'H9', 'J2']
     expect(advice_for_alex(agents)).to match_array(['A10', 'A8', 'F1'])

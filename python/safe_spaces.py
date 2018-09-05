@@ -128,7 +128,7 @@ class City:
             Should be formatted in indexed vector form,
             e.g. [0, 5].
 
-        Returns a list of representing the distance matrix for all coordinates in the city
+        Returns a list representing the distance matrix for all coordinates in the city
             with respect to the given agent.
         """
         row, col = agent

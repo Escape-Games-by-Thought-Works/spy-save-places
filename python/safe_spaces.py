@@ -112,8 +112,7 @@ class Agent:
 
 
 class City:
-    """A city where Alex needs to find safe places from the agents
-    to hide out from the agents"""
+    """A city where Alex needs to find safe places to hide out from the agents"""
 
     def __init__(self, size):
         """Creates a new City of the given size
@@ -178,18 +177,17 @@ class City:
 
         return np.array(grid)
 
-    def is_within_boundaries(self, coords):
-        """Checks if the given coordinates are within the city
+    def is_agent_within_boundaries(self, agent):
+        """Checks if the given agent is in city
 
         Arguments:
-        coords -- a list with two numbers representing coordinates, e.g. [1, 2]
+        agent -- an agent
 
-        Returns a boolean stating whether or not the coordinates are within the city
+        Returns a boolean stating whether or not the agent is in the city
         """
-        CoordinateUtils.validate_coordinates(coords)
-        row, col = coords
+        row, col = agent.coordinates
 
-        return row >= 0 and row < self.size and col >= 0 and col < self.size
+        return 0 <= row < self.size and 0 <= col < self.size
 
 
 class SafetyFinder:
@@ -248,7 +246,7 @@ class SafetyFinder:
             raise ValueError('"agents" must be list-like (was {})'.format(agents))
 
         distinct_valid_agents = set(filter(
-            lambda agent: self.CITY.is_within_boundaries(agent.coordinates),
+            lambda agent: self.CITY.is_agent_within_boundaries(agent),
             map(
                 lambda alphanum_coords: Agent.from_alphanumeric_coordinates(alphanum_coords),
                 agents

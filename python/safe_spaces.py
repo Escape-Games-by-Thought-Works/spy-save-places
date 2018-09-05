@@ -18,11 +18,11 @@ class CoordinateUtils:
         """Converts alphanumeric coordinates into a list of numeric coordinates
 
         Arguments:
-        alphanum_coords -- a string representing alphanumeric coordinates, e.g. 'F5'
+        alphanum_coords -- a string representing alphanumeric coordinates, e.g. 'F5'.
 
-        Returns a list with two numbers representing the corresponding coordinates
+        Returns a list with two numbers representing the corresponding coordinates.
 
-        Throws a ValueError if alphanum_coords is not valid
+        Throws a ValueError if alphanum_coords is not valid.
         """
         cls.validate_alphanumeric_coordinates(alphanum_coords)
         reMatch = cls.RE_ALPHANUM_COORDS.match(alphanum_coords)
@@ -35,9 +35,9 @@ class CoordinateUtils:
         """Validates the given alphanumeric coordinates
 
         Arguments:
-        alphanum_coords -- a string representing alphanumeric coordinates, e.g. 'F5'
+        alphanum_coords -- a string representing alphanumeric coordinates, e.g. 'F5'.
 
-        Throws a ValueError if alphanum_coords is not valid
+        Throws a ValueError if alphanum_coords is not valid.
         """
         if not isinstance(alphanum_coords, str):
             raise ValueError('alphanum_coords must be a string (was {})'.format(alphanum_coords))
@@ -50,11 +50,11 @@ class CoordinateUtils:
         """Converts the given coordinates into alphanumeric coordinates
 
         Arguments:
-        coords -- a list with two numbers representing coordinates, e.g. [1, 2]
+        coords -- coordinates in indexed vector form, e.g. [1, 2].
 
-        Returns a string representing the corresponding alphanumeric coordinates, e.g. 'F5'
+        Returns a string representing the corresponding alphanumeric coordinates, e.g. 'F5'.
 
-        Throws a ValueError if coords is not valid
+        Throws a ValueError if coords is not valid.
         """
         cls.validate_coordinates(coords)
         row, col = coords
@@ -65,7 +65,7 @@ class CoordinateUtils:
         """Validates the given coordinates
 
         Arguments:
-        coords -- a list with two numbers representing coordinates, e.g. [1, 2]
+        coords -- coordinates in indexed vector form, e.g. [1, 2].
 
         Throws a ValueError if coords is not valid
         """
@@ -76,39 +76,6 @@ class CoordinateUtils:
             raise ValueError('row must be an integer greater than or equal to 0')
         if not isinstance(col, int) or col < 0:
             raise ValueError('col must be an integer greater than or equal to 0')
-
-
-class Agent:
-    """An agent looking for Alex"""
-
-    def __init__(self, coords):
-        """Creates a new Agent from coordinates
-        
-        Arguments:
-        coords -- a list with two numbers representing coordinates, e.g. [1, 2]
-        """
-        CoordinateUtils.validate_coordinates(coords)
-        self.coordinates = coords
-        
-    @classmethod
-    def from_alphanumeric_coordinates(cls, alphanum_coords):
-        """Creates a new Agent from alphanumeric coordinates
-
-        Arguments:
-        alphanum_coords -- a string representing alphanumeric coordinates, e.g. 'F5'
-
-        Returns a new Agent instance at the corresponding coordinates
-        """
-        return Agent(CoordinateUtils.to_coordinates(alphanum_coords))
-
-    def __hash__(self):
-        return hash('r{}'.format(self.coordinates[0])) ^ hash('c{}'.format(self.coordinates[1]))
-
-    def __eq__(self, other):
-        return isinstance(other, Agent) and hash(self) == hash(other)
-
-    def __repr__(self):
-        return '[{}, {}]'.format(self.coordinates[0], self.coordinates[1])
 
 
 class City:
@@ -138,9 +105,11 @@ class City:
         6 5 4 5 6       3 2 3 4 5       3 2 3 4 5
 
         Arguments:
-        agents -- a list of Agents
+        agents -- a list-like object containing the map coordinates of agents.
+            Each entry should be formatted in indexed vector form,
+            e.g. [0, 5], [3, 7], etc.
 
-        Returns a list of coordinates representing safe places
+        Returns a list of coordinates representing safe places in indexed vector form.
         """
         if not isinstance(agents, Iterable) or isinstance(agents, str):
             raise ValueError('"agents" must be list-like (was {})'.format(agents))
@@ -155,15 +124,14 @@ class City:
         """Computes the distances of Alex from a given agent in the city
 
         Arguments:
-        agent -- an Agent
+        agent -- map coordinates of an agent.
+            Should be formatted in indexed vector form,
+            e.g. [0, 5].
 
         Returns a numpy array representing the distance matrix for all coordinates in the city
-            with respect to the given agent
+            with respect to the given agent.
         """
-        if not isinstance(agent, Agent):
-            raise ValueError('"agent" must be an Agent (was {})'.format(agent))
-
-        row, col = agent.coordinates
+        row, col = agent
         grid = []
         for curRow in range(0, self.size):
             distance = abs(curRow - row)
@@ -181,12 +149,13 @@ class City:
         """Checks if the given agent is in city
 
         Arguments:
-        agent -- an agent
+        agent -- map coordinates of an agent.
+            Should be formatted in indexed vector form,
+            e.g. [0, 5].
 
-        Returns a boolean stating whether or not the agent is in the city
+        Returns a boolean stating whether or not the agent is in the city.
         """
-        row, col = agent.coordinates
-
+        row, col = agent
         return 0 <= row < self.size and 0 <= col < self.size
 
 
@@ -212,10 +181,7 @@ class SafetyFinder:
         if not isinstance(agents, Iterable) or isinstance(agents, str):
             raise ValueError('"agents" must be list-like (was {})'.format(agents))
 
-        return [
-            Agent.from_alphanumeric_coordinates(alphanum_coords).coordinates
-            for alphanum_coords in agents
-        ]
+        return [CoordinateUtils.to_coordinates(alphanum_coords) for alphanum_coords in agents]
 
     def find_safe_spaces(self, agents):
         """This method will take an array with agent locations and find
@@ -228,7 +194,7 @@ class SafetyFinder:
 
         Returns a list of safe spaces in indexed vector form.
         """
-        return self.CITY.get_safe_places_for_agents([Agent(coords) for coords in agents])
+        return self.CITY.get_safe_places_for_agents(agents)
 
     def advice_for_alex(self, agents):
         """This method will take an array with agent locations and offer advice
@@ -245,19 +211,29 @@ class SafetyFinder:
         if not isinstance(agents, Iterable) or isinstance(agents, str):
             raise ValueError('"agents" must be list-like (was {})'.format(agents))
 
-        distinct_valid_agents = set(filter(
-            lambda agent: self.CITY.is_agent_within_boundaries(agent),
-            map(
-                lambda alphanum_coords: Agent.from_alphanumeric_coordinates(alphanum_coords),
-                agents
-            )
-        ))
-        if len(distinct_valid_agents) == 0:
+        distinct_agents_in_city = self.__get_distinct_agents_in_city(agents)
+        if len(distinct_agents_in_city) == 0:
             return self.MSG_BEST_CASE
-        if len(distinct_valid_agents) == self.CITY.size ** 2:
+        if len(distinct_agents_in_city) == self.CITY.size ** 2:
             return self.MSG_WORST_CASE
 
         return [
             CoordinateUtils.to_alphanumeric_coordinates(coords)
-            for coords in self.CITY.get_safe_places_for_agents(distinct_valid_agents)
+            for coords in self.CITY.get_safe_places_for_agents(distinct_agents_in_city)
         ]
+
+    def __get_distinct_agents_in_city(self, agents):
+        """Determines distinct agents which are in the city
+
+        Arguments:
+        agents -- a list-like object containing the map coordinates of the agents.
+            Each entry should be formatted in alphanumeric form, e.g. A10, E6, etc.
+
+        Returns a list of agent coordinates in indexed vector form.
+        """
+        distinct_agents_in_city = set()
+        for agent in self.convert_coordinates(agents):
+            if (self.CITY.is_agent_within_boundaries(agent)):
+                distinct_agents_in_city.add(tuple(agent))
+        return [list(agent) for agent in distinct_agents_in_city]
+

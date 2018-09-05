@@ -114,7 +114,7 @@ class City:
         if not isinstance(agents, Iterable) or isinstance(agents, str):
             raise ValueError('"agents" must be list-like (was {})'.format(agents))
 
-        distances = [self.__get_distances_for_agent(agent) for agent in agents]
+        distances = [np.array(self.__get_distances_for_agent(agent)) for agent in agents]
         merged_distances = np.asarray(distances).min(0)
         safe_places = np.argwhere(merged_distances == np.amax(merged_distances))
 
@@ -128,7 +128,7 @@ class City:
             Should be formatted in indexed vector form,
             e.g. [0, 5].
 
-        Returns a numpy array representing the distance matrix for all coordinates in the city
+        Returns a list of representing the distance matrix for all coordinates in the city
             with respect to the given agent.
         """
         row, col = agent
@@ -143,7 +143,7 @@ class City:
                 + list(range(distance + 1, rightDistance))
             )
 
-        return np.array(grid)
+        return grid
 
     def is_agent_within_boundaries(self, agent):
         """Checks if the given agent is in city

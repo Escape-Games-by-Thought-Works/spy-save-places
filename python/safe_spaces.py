@@ -85,7 +85,7 @@ class City:
         self.size = size
         self.max_distance = size * 2 - 2
 
-    def get_safest_points(self, agents):
+    def get_safe_places(self, agents):
         safest_distance = self.__MIN_SAFE_DISTANCE
         safest_points = []
         for point in self.__iter_points():
@@ -164,7 +164,7 @@ class SafetyFinder:
 
         Returns a list of safe spaces in indexed vector form.
         """
-        return self.CITY.get_safest_points(agents)
+        return self.CITY.get_safe_places(agents)
 
     def advice_for_alex(self, agents):
         """This method will take an array with agent locations and offer advice
@@ -189,7 +189,7 @@ class SafetyFinder:
 
         return [
             CoordinateUtils.to_alphanumeric_coordinates(coords)
-            for coords in self.CITY.get_safest_points(distinct_agents_in_city)
+            for coords in self.CITY.get_safe_places(distinct_agents_in_city)
         ]
 
     def __get_distinct_agents_in_city(self, agents):

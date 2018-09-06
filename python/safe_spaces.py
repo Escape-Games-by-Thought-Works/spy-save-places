@@ -1,6 +1,5 @@
 """Solve the spy game!"""
 
-import numpy as np
 import re
 
 from collections import Iterable

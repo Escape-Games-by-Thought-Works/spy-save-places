@@ -1,18 +1,22 @@
 require 'rspec'
+require_relative 'escapist'
 
 # This is where you implement your solution 
 def convert_coordinates(agents)
+  Escapist.new.convert_coordinates(agents)
 end
 
 def find_safe_spaces(agents)
+  Escapist.new.find_safe_spaces(agents)
 end
 
 def advice_for_alex(agents)
+  Escapist.new.advice_for_alex(agents)
 end
 
 # Please enable Level 1, 2, 3-Tests by replacing xdescribe with describe!
 # Do not edit the tests itself!
-RSpec.xdescribe 'Spy Places Level 1 - convert coordinates' do
+RSpec.describe 'Spy Places Level 1 - convert coordinates' do
   it 'no agents return empty array' do
     agents = []
     expect(convert_coordinates(agents)).to match_array([])
@@ -37,7 +41,7 @@ RSpec.xdescribe 'Spy Places Level 1 - convert coordinates' do
   end
 end
 
-RSpec.xdescribe 'Spy Places Level 2 - find save places' do
+RSpec.describe 'Spy Places Level 2 - find save places' do
   it 'some places are save if agents are some' do
     agents =
         [[1, 1], [3, 5], [4, 8], [7, 3], [7, 8], [9, 1]]
@@ -55,7 +59,7 @@ RSpec.xdescribe 'Spy Places Level 2 - find save places' do
   end
 end
 
-RSpec.xdescribe 'Spy Places Level 3 - find edge cases and give advice to Alex' do
+RSpec.describe 'Spy Places Level 3 - find edge cases and give advice to Alex' do
   it 'expects all save places at no agents' do
     agents = []
     expect(advice_for_alex(agents)).to eq('The whole city is safe for Alex! :-)')

@@ -38,7 +38,7 @@ public class SafePlaceFInderImplemented {
 
 
 
-	public List<String> agentLocationProcessorAndInit(List<String> agentInput) {
+	protected List<String> agentLocationProcessorAndInit(List<String> agentInput) {
 		agentLocations = agentInput;
 		
 		for (String agent : agentLocations) {		
@@ -202,7 +202,7 @@ public class SafePlaceFInderImplemented {
 		}
 	}
 	
-	public BigDecimal bigDecimalScaleErrorCorrecter(BigDecimal value) {
+	protected BigDecimal bigDecimalScaleErrorCorrecter(BigDecimal value) {
 	
 	if(value.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) == 0) {
 		value = value.setScale(0);		

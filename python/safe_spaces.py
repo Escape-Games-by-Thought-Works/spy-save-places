@@ -90,6 +90,7 @@ class City:
         if not isinstance(size, int) or size < 1:
             raise ValueError('"size must be an integer greater than or equal to 1')
         self.size = size
+        self.__max_distance = 2 * size - 2
         self.__distances = None
 
     def get_safe_places(self, agents):
@@ -115,8 +116,9 @@ class City:
         if not isinstance(agents, Iterable) or isinstance(agents, str):
             raise ValueError('"agents" must be list-like (was {})'.format(agents))
 
-        distances = [self.__get_agent_distances(agent) for agent in agents]
-        merged_distances = np.asarray(distances).min(0)
+        merged_distances = np.full((self.size, self.size), self.__max_distance)
+        for agent in agents:
+            merged_distances = np.minimum(merged_distances, self.__get_agent_distances(agent))
         safe_places = np.argwhere(merged_distances == np.amax(merged_distances))
 
         return safe_places.tolist()

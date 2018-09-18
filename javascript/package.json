@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "format": "prettier --write src/**/*.js"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +14,10 @@
   "dependencies": {
     "jest": "^23.2.0",
     "npm": "^6.3.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.2",
+    "prettier": "1.14.2",
+    "typescript": "^3.0.3"
   }
 }

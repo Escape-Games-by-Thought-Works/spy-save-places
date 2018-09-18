@@ -48,13 +48,34 @@ class City {
   }
 
   /**
+   * @returns {Position[]}
+   */
+  getBlocks() {
+    return [...this.cityMap.keys()];
+  }
+
+  /**
+   * @returns {number[]}
+   */
+  getDistances() {
+    return [...this.cityMap.values()];
+  }
+
+  /**
+   * @returns {Array<[Position, number]>}
+   */
+  getBlocksAndDistances() {
+    return [...this.cityMap.entries()];
+  }
+
+  /**
    * Filters out all blocks outside the city's grid
    * @param {Position[]} blockPositions blocks to be filtered
    * @returns {Position[]} blocks inside the city
    */
-  getOnlyPositionsInCity(blockPositions) {
-    return blockPositions.filter(([col, row]) => {
-      return col < this.blockAmount && row < this.blockAmount;
+  getBlocksInCity(blockPositions) {
+    return blockPositions.filter(([colNumber, rowNumber]) => {
+      return colNumber < this.blockAmount && rowNumber < this.blockAmount;
     });
   }
 
@@ -64,7 +85,7 @@ class City {
    * @param {Position[]} agentPositions agent positions
    */
   placeAgents(agentPositions) {
-    [...this.cityMap.keys()].forEach(blockPosition => {
+    this.getBlocks().forEach(blockPosition => {
       const agentDistances = agentPositions.map(agentPosition =>
         City.getDistanceBetween(blockPosition, agentPosition)
       );
@@ -77,8 +98,8 @@ class City {
    * @returns {Position[]} a list of blocks having the greatest distance to an agent
    */
   getSafePlaces() {
-    const maxAgentDistance = Math.max(...this.cityMap.values());
-    return [...this.cityMap.entries()]
+    const maxAgentDistance = Math.max(...this.getDistances());
+    return this.getBlocksAndDistances()
       .filter(
         ([_position, distance]) => distance > 0 && distance === maxAgentDistance
       )
@@ -125,7 +146,7 @@ const findSafePlaces = agentPositions => {
  */
 const adviceForAlex = agentCoordinates => {
   const agentPositions = convertCoordinates(agentCoordinates);
-  const agentPositionsInCity = city.getOnlyPositionsInCity(agentPositions);
+  const agentPositionsInCity = city.getBlocksInCity(agentPositions);
   if (agentPositionsInCity.length === 0) {
     return "The whole city is safe for Alex! :-)";
   }

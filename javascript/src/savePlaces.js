@@ -50,21 +50,21 @@ class City {
   /**
    * @returns {Position[]}
    */
-  getBlocks() {
+  getAllBlocks() {
     return [...this.cityMap.keys()];
   }
 
   /**
    * @returns {number[]}
    */
-  getDistances() {
+  getAllDistances() {
     return [...this.cityMap.values()];
   }
 
   /**
    * @returns {Array<[Position, number]>}
    */
-  getBlocksAndDistances() {
+  getAllBlocksAndDistances() {
     return [...this.cityMap.entries()];
   }
 
@@ -73,7 +73,7 @@ class City {
    * @param {Position[]} blockPositions blocks to be filtered
    * @returns {Position[]} blocks inside the city
    */
-  getBlocksInCity(blockPositions) {
+  filterBlocksLocatedInCity(blockPositions) {
     return blockPositions.filter(([colNumber, rowNumber]) => {
       return colNumber < this.blockAmount && rowNumber < this.blockAmount;
     });
@@ -85,7 +85,7 @@ class City {
    * @param {Position[]} agentPositions agent positions
    */
   placeAgents(agentPositions) {
-    this.getBlocks().forEach(blockPosition => {
+    this.getAllBlocks().forEach(blockPosition => {
       const agentDistances = agentPositions.map(agentPosition =>
         City.getDistanceBetween(blockPosition, agentPosition)
       );
@@ -98,8 +98,8 @@ class City {
    * @returns {Position[]} a list of blocks having the greatest distance to an agent
    */
   getSafePlaces() {
-    const maxAgentDistance = Math.max(...this.getDistances());
-    return this.getBlocksAndDistances()
+    const maxAgentDistance = Math.max(...this.getAllDistances());
+    return this.getAllBlocksAndDistances()
       .filter(
         ([_position, distance]) => distance > 0 && distance === maxAgentDistance
       )
@@ -146,7 +146,7 @@ const findSafePlaces = agentPositions => {
  */
 const adviceForAlex = agentCoordinates => {
   const agentPositions = convertCoordinates(agentCoordinates);
-  const agentPositionsInCity = city.getBlocksInCity(agentPositions);
+  const agentPositionsInCity = city.filterBlocksLocatedInCity(agentPositions);
   if (agentPositionsInCity.length === 0) {
     return "The whole city is safe for Alex! :-)";
   }

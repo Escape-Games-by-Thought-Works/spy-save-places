@@ -33,19 +33,17 @@ const findSafePlaces = numAgents => {
   };  
 
   const addDistanceToNearestAgent = (place, agentPositions) => {
-    const distanceToClosestAgent = (agents, coordinate) => {
       //calculate the abs distance (steps)
-      const getDistance = (agent, place) => {
-        const distCol = Math.abs(place.coordinates[0] - agent[0]);
-        const distRow = Math.abs(place.coordinates[1] - agent[1]);
-        return distCol + distRow;
-      };
-      return agents
-        .map(agent => getDistance(agent, coordinate))
-        .reduce((min, distance) => distance < min ? distance : min); //return min distance
+    
+      place.distanceToNearestAgent = agentPositions
+        .map(
+          agent => //get distance
+            Math.abs(place.coordinates[0] - agent[0]) + 
+            Math.abs(place.coordinates[1] - agent[1])
+        )
+        .reduce((min, distance) => (distance < min ? distance : min)); //return min distance
         
-    }
-    place.distanceToNearestAgent = distanceToClosestAgent(agentPositions, place);
+    
     return place;
   };
 
@@ -55,13 +53,16 @@ const findSafePlaces = numAgents => {
     .map(place => place.coordinates);
 };
 
-const adviceForAlex = stringAgents => {
-  //is coordinate inside or ouside the city?
+const adviceForAlex = stringAgents => { 
+
   isInsideTheCity = coordinate => {
-    const row = coordinate.slice(0, 1);
-    const col = coordinate.slice(1);
-    return row.match(/^[A-J]$/) && col >= 1 && col <= 10;
-  };  
+    numCoordinates = convertCoordinates([coordinate]);
+    row = numCoordinates[0][0]
+    col = numCoordinates[0][1]
+    console.log("numCoordinates",row,col);
+    return row >= 0 && row <= gridSize-1 && col >= 0 && col <= gridSize-1;
+    
+  }
 
   // convert numerical index to string index  [0,0] -> ['A1']
   const numToStringCoordinate = numCoordinate => {

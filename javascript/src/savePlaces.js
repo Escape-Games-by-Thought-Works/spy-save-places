@@ -79,8 +79,10 @@ class City {
   getSafePlaces() {
     const maxAgentDistance = Math.max(...this.cityMap.values());
     return [...this.cityMap.entries()]
-      .filter(([, distance]) => distance > 0 && distance === maxAgentDistance)
-      .map(([position]) => position);
+      .filter(
+        ([_position, distance]) => distance > 0 && distance === maxAgentDistance
+      )
+      .map(([position, _distance]) => position);
   }
 }
 
@@ -137,12 +139,11 @@ const adviceForAlex = agentCoordinates => {
 /**
  * Converts positions to coordinates coded in a string consisting of a capital letter and a number
  * @param {Position[]} agentPositions
+ * @returns {string[]}
  */
 const convertPositions = agentPositions => {
   return agentPositions.map(([colNumber, rowNumber]) => {
-    return `${convertPositionColumn(colNumber)}${convertPositionRow(
-      rowNumber
-    )}`;
+    return convertPositionColumn(colNumber) + convertPositionRow(rowNumber);
   });
 };
 
@@ -167,4 +168,3 @@ module.exports = {
   findSafePlaces,
   adviceForAlex
 };
-

@@ -117,7 +117,7 @@ const findSafePlaces = agentPositions => {
 
 /**
  * Returns the coordinates of the safest positions in a city for a given list of agent coordinates.
- * If there is no agent in the city or the city is full of spies then a corresponding message is returned.
+ * If there is no agent in the city or the city is full of agents then a corresponding message is returned.
  * @param {string[]} agentCoordinates
  * @returns {string | string[]}
  */

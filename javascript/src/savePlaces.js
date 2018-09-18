@@ -167,3 +167,4 @@ module.exports = {
   findSafePlaces,
   adviceForAlex
 };
+

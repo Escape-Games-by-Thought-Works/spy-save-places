@@ -50,10 +50,9 @@ const stringToNumArray = stringCoordinate => {
 
 //calculate the abs distance (steps)
 const getDistance = (agent, place) => {
-  return (
-    Math.abs(place.coordinates[0] - agent[0]) +
-    Math.abs(place.coordinates[1] - agent[1])
-  );
+  const distCol=Math.abs(place.coordinates[0] - agent[0]);
+  const distRow=Math.abs(place.coordinates[1] - agent[1]);
+  return distCol+distRow;
 };
 //is coordinate inside or ouside the city?
 isInsideTheCity = coordinate => {

@@ -10,26 +10,26 @@
 class City {
   /**
    * Calculates the distance between 2 blocks in a city
-   * @param {Position} blockA
-   * @param {Position} blockB
+   * @param {Position} blockAPosition
+   * @param {Position} blockBPosition
    * @returns {number}
    */
-  static getDistanceBetween([blockACol, blockARow], [blockBCol, blockBRow]) {
-    const colDistance = Math.abs(blockACol - blockBCol);
-    const rowDistance = Math.abs(blockARow - blockBRow);
+  static getDistanceBetween([blockAColNumber, blockARowNumber], [blockBColNumber, blockBRowNumber]) {
+    const colDistance = Math.abs(blockAColNumber - blockBColNumber);
+    const rowDistance = Math.abs(blockARowNumber - blockBRowNumber);
     return colDistance + rowDistance;
   }
 
   /**
    * Constructs a city having this amount of columns and rows
-   * @param {number} dim the city's amount of columns / rows
+   * @param {number} blockAmount the city's amount of columns / rows
    */
-  constructor(dim) {
+  constructor(blockAmount) {
     /**
      * The city's amount of columns / rows
      * @type {number}
      */
-    this.dim = dim;
+    this.blockAmount = blockAmount;
 
     /**
      * @type {Map<Position, number>} A map of the city blocks and the smallest distance to an agent
@@ -37,35 +37,35 @@ class City {
     this.cityMap = new Map();
 
     // Initialize the city block map with a negative distance
-    for (let i = 0; i < this.dim; i++) {
-      for (let j = 0; j < this.dim; j++) {
-        this.cityMap.set([i, j], -1);
+    for (let colNumber = 0; colNumber < this.blockAmount; colNumber++) {
+      for (let rowNumber = 0; rowNumber < this.blockAmount; rowNumber++) {
+        this.cityMap.set([colNumber, rowNumber], -1);
       }
     }
   }
 
   /**
    * Filters out all blocks outside the city's grid
-   * @param {Position[]} blocks blocks to be filtered
+   * @param {Position[]} blockPositions blocks to be filtered
    * @returns {Position[]} blocks inside the city
    */
-  getBlocksInsideCity(blocks) {
-    return blocks.filter(([col, row]) => {
-      return col < this.dim && row < this.dim;
+  getOnlyPositionsInCity(blockPositions) {
+    return blockPositions.filter(([col, row]) => {
+      return col < this.blockAmount && row < this.blockAmount;
     });
   }
 
   /**
    * Given the list of agents passed to this method, the smallest distance to an agent 
    * is calculated for each city block and stored in the city's map
-   * @param {Position[]} agents agent positions
+   * @param {Position[]} agentPositions agent positions
    */
-  placeAgents(agents) {
-    [...this.cityMap.keys()].forEach(block => {
-      const agentDistances = agents.map(agent =>
-        City.getDistanceBetween(block, agent)
+  placeAgents(agentPositions) {
+    [...this.cityMap.keys()].forEach(blockPosition => {
+      const agentDistances = agentPositions.map(agentPosition =>
+        City.getDistanceBetween(blockPosition, agentPosition)
       );
-      this.cityMap.set(block, Math.min(...agentDistances));
+      this.cityMap.set(blockPosition, Math.min(...agentDistances));
     });
   }
 
@@ -82,43 +82,45 @@ class City {
 }
 
 /**
- * Create city instance
+ * City instance with 10 columns and 10 rows
  */
 const city = new City(10);
 
 /**
- *
- * @param {string[]} agents
+ * Converts block coordinates coded in a string consisting of a capital letter and a number
+ * to a Position (i.e. an array containing the column and the row number of a block)
+ * @param {string[]} agentCoordinatesList
  * @returns {Position[]}
  */
-const convertCoordinates = agents => {
-  return agents.map(agent => {
-    const colStr = agent.substr(0, 1);
-    const col = colStr.charCodeAt(0) - 65;
-    const rowStr = agent.substr(1);
-    const row = parseInt(rowStr) - 1;
-    return [col, row];
+const convertCoordinates = agentCoordinatesList => {
+  return agentCoordinatesList.map(agentCoordinates => {
+    const colCoordinate = agentCoordinates.substr(0, 1);
+    const colNumber = colCoordinate.charCodeAt(0) - 65;
+    const rowCoordinate = agentCoordinates.substr(1);
+    const rowNumber = parseInt(rowCoordinate) - 1;
+    return [colNumber, rowNumber];
   });
 };
 
 /**
- * TODO
- * @param {Position[]} agents
+ * Returns the safest positions in a city (as a list) for a given list of agent positions
+ * @param {Position[]} agentPositions
  * @returns {Position[]}
  */
-const findSafePlaces = agents => {
-  city.placeAgents(agents);
+const findSafePlaces = agentPositions => {
+  city.placeAgents(agentPositions);
   return city.getSafePlaces();
 };
 
 /**
- * TODO
- * @param {string[]} agents
+ * Returns the coordinates of the safest positions in a city for a given list of agent coordinates.
+ * If there is no agent in the city or the city is full of spies then a corresponding message is returned.
+ * @param {string[]} agentCoordinates
  * @returns {string | string[]}
  */
-const adviceForAlex = agents => {
-  const agentPositions = convertCoordinates(agents);
-  const agentPositionsInCity = city.getBlocksInsideCity(agentPositions);
+const adviceForAlex = agentCoordinates => {
+  const agentPositions = convertCoordinates(agentCoordinates);
+  const agentPositionsInCity = city.getOnlyPositionsInCity(agentPositions);
   if (agentPositionsInCity.length === 0) {
     return "The whole city is safe for Alex! :-)";
   }
@@ -126,32 +128,32 @@ const adviceForAlex = agents => {
   if (safePlaces.length === 0) {
     return "There are no safe locations for Alex! :-(";
   }
-  return convertToCoordinates(safePlaces);
+  return convertPositions(safePlaces);
 };
 
 /**
- * TODO
- * @param {Position[]} agents
+ * Converts positions to coordinates coded in a string consisting of a capital letter and a number
+ * @param {Position[]} agentPositions
  */
-const convertToCoordinates = agents => {
-  return agents.map(([col, row]) => {
-    return `${convertColumn(col)}${convertRow(row)}`;
+const convertPositions = agentPositions => {
+  return agentPositions.map(([colNumber, rowNumber]) => {
+    return `${convertPositionColumn(colNumber)}${convertPositionRow(rowNumber)}`;
   });
 };
 
 /**
- * TODO
+ * Converts a column number used in a position to a capital letter
  * @param {number} colNumber
  */
-const convertColumn = colNumber => {
+const convertPositionColumn = colNumber => {
   return String.fromCharCode(colNumber + 65);
 };
 
 /**
- * TODO
+ * Converts a row number used in a positon to a human legible row number string
  * @param {number} rowNumber
  */
-const convertRow = rowNumber => {
+const convertPositionRow = rowNumber => {
   return (rowNumber + 1).toString();
 };
 

@@ -1,4 +1,5 @@
 """Solve the spy game!"""
+import numpy as np
 
 class SafetyFinder:
     """A class that contains everything we need to find the
@@ -15,7 +16,14 @@ class SafetyFinder:
 
         Returns a list of coordinates in zero-indexed vector form.
         """
-        pass
+        res = []
+
+        for element in agents:
+            x = ord(element[0])-ord('A')
+            y = int(element[1:]) - 1 #converts to 0-index
+            res.append([x, y])
+        
+        return res
 
     def find_safe_spaces(self, agents):
         """This method will take an array with agent locations and find
@@ -28,7 +36,30 @@ class SafetyFinder:
 
         Returns a list of safe spaces in indexed vector form.
         """
-        pass
+        max_size = 10
+        # points = np.zeros((max_size, max_size))
+        best_dist = -1;
+        bests = []
+        for yi in range(max_size):
+            for xi in range(max_size):
+                minDistance = max_size * max_size
+                for a in agents:
+                    distancePa = abs((a[0] - xi)) + abs((a[1] - yi))
+                    if distancePa < minDistance:
+                        minDistance = distancePa
+
+                    print(xi, yi, distancePa)
+                if minDistance < best_dist:
+                    continue
+
+                if minDistance == best_dist:
+                    bests.append([xi, yi])
+                    continue
+
+                best_dist = minDistance
+                bests = [[xi, yi]]
+
+        return bests
 
     def advice_for_alex(self, agents):
         """This method will take an array with agent locations and offer advice

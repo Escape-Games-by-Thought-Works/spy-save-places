@@ -1,4 +1,5 @@
 """Solve the spy game!"""
+
 class SafetyFinder:
     """A class that contains everything we need to find the
     safest places in the city for Alex to hide out
@@ -79,12 +80,8 @@ class SafetyFinder:
         if len(safe_places) == self.max_size**2:
             return "There are no safe locations for Alex! :-("
 
-        print(safe_places)
         results = []
         for element in safe_places:
-            letter = chr(element[0] + ord('A'))
-            nmb = str(element[1]+1)
-            string = letter + nmb
-            results.append(string)
+           results.append(chr(element[0] + ord('A')) + str(element[1]+1))
 
         return results

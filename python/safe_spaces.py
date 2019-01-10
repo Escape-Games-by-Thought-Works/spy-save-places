@@ -1,6 +1,4 @@
 """Solve the spy game!"""
-import numpy as np
-
 class SafetyFinder:
     """A class that contains everything we need to find the
     safest places in the city for Alex to hide out

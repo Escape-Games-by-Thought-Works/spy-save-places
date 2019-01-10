@@ -88,4 +88,3 @@ class SafetyFinder:
             results.append(string)
 
         return results
-        pass

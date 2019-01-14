@@ -39,7 +39,28 @@ class SafetyFinder:
 
         Returns a list of safe spaces in indexed vector form.
         """
-        pass
+
+        bestPlaceMinDistance = -1;
+        bestPlaces = []
+        for yi in range(self.MAP_SIZE):
+            for xi in range(self.MAP_SIZE):
+                minDistance = self.MAP_SIZE * self.MAP_SIZE
+                for agent in agents:
+                    distance = abs((agent[0] - xi)) + abs((agent[1] - yi))
+                    if distance < minDistance:
+                        minDistance = distance
+
+                if minDistance < bestPlaceMinDistance:
+                    continue
+
+                if minDistance == bestPlaceMinDistance:
+                    bestPlaces.append([xi, yi])
+                    continue
+
+                bestPlaceMinDistance = minDistance
+                bestPlaces = [[xi, yi]]
+
+        return bestPlaces
 
     def advice_for_alex(self, agents):
         """This method will take an array with agent locations and offer advice

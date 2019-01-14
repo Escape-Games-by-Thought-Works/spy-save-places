@@ -35,21 +35,18 @@ class SafetyFinderTest(unittest.TestCase):
                          [[9, 9]])
 
     # Level 2 -- Find safe spaces in the city based on agent locations
-    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_safe_spaces_round1(self):
         """Test for six agents at specified locations"""
         agents = [[1, 1], [3, 5], [4, 8], [7, 3], [7, 8], [9, 1]]
         self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
                          sorted([[0, 9], [0, 7], [5, 0]]))
 
-    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_safe_spaces_round2(self):
         """Test for six agents at different specified locations"""
         agents = [[0, 0], [0, 9], [1, 5], [5, 1], [9, 0], [9, 9]]
         self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
                          sorted([[5, 7], [6, 6], [7, 5]]))
 
-    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_safe_spaces_round3(self):
         """Test for one agent at a specified location"""
         agents = [[0, 0]]

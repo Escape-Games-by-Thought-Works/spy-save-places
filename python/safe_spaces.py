@@ -15,7 +15,15 @@ class SafetyFinder:
 
         Returns a list of coordinates in zero-indexed vector form.
         """
-        pass
+
+        coordinates = []
+        for agent in agents:
+            x = ord(agent[0]) - ord('A')
+            y = int(agent[1:]) - 1
+
+            coordinates.append([x, y])
+
+        return coordinates
 
     def find_safe_spaces(self, agents):
         """This method will take an array with agent locations and find

@@ -3,7 +3,6 @@ import unittest
 
 from safe_spaces import SafetyFinder
 
-@unittest.skip("Comment or delete this line to solve the challenge with python")
 class SafetyFinderTest(unittest.TestCase):
     """A class that contains the unit tests that adhere to the game spec"""
 
@@ -36,18 +35,21 @@ class SafetyFinderTest(unittest.TestCase):
                          [[9, 9]])
 
     # Level 2 -- Find safe spaces in the city based on agent locations
+    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_safe_spaces_round1(self):
         """Test for six agents at specified locations"""
         agents = [[1, 1], [3, 5], [4, 8], [7, 3], [7, 8], [9, 1]]
         self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
                          sorted([[0, 9], [0, 7], [5, 0]]))
 
+    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_safe_spaces_round2(self):
         """Test for six agents at different specified locations"""
         agents = [[0, 0], [0, 9], [1, 5], [5, 1], [9, 0], [9, 9]]
         self.assertEqual(sorted(SafetyFinder().find_safe_spaces(agents)),
                          sorted([[5, 7], [6, 6], [7, 5]]))
 
+    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_safe_spaces_round3(self):
         """Test for one agent at a specified location"""
         agents = [[0, 0]]
@@ -55,11 +57,13 @@ class SafetyFinderTest(unittest.TestCase):
                          sorted([[9, 9]]))
 
     # Level 3 -- Handling edge cases and offering recommendations
+    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_no_agents(self):
         """Tests for no agents in the city"""
         self.assertEqual(SafetyFinder().advice_for_alex([]),
                          'The whole city is safe for Alex! :-)')
 
+    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_agents_everywhere(self):
         """Tests for agents everywhere in the city. Oh no!!"""
         agents = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10',
@@ -75,12 +79,14 @@ class SafetyFinderTest(unittest.TestCase):
         self.assertEqual(SafetyFinder().advice_for_alex(agents),
                          'There are no safe locations for Alex! :-(')
 
+    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_advice_round1(self):
         """Test for six agents at specified locations"""
         agents = ['B2', 'D6', 'E9', 'H4', 'H9', 'J2']
         self.assertEqual(sorted(SafetyFinder().advice_for_alex(agents)),
                          sorted(['A10', 'A8', 'F1']))
 
+    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_advice_round2(self):
         """Test for seven agents at specified locations"""
         agents = ['B4', 'C4', 'C8', 'E2', 'F10', 'H1', 'J6']
@@ -88,18 +94,21 @@ class SafetyFinderTest(unittest.TestCase):
                          sorted(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5',
                                  'G7', 'H8', 'I9', 'J10']))
 
+    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_advice_round3(self):
         """Test for a different six agents at specified locations"""
         agents = ['A1', 'A10', 'B6', 'F2', 'J1', 'J10']
         self.assertEqual(sorted(SafetyFinder().advice_for_alex(agents)),
                          sorted(['F8', 'G7', 'H6']))
 
+    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_advice_round4(self):
         """Test when only a single agent remains in the city"""
         agents = ['A1']
         self.assertEqual(sorted(SafetyFinder().advice_for_alex(agents)),
                          sorted(['J10']))
 
+    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_agent_outside_map(self):
         """Test when only a single agent remains in the city"""
         agents = ['A12']

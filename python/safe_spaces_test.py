@@ -111,6 +111,11 @@ class SafetyFinderTest(unittest.TestCase):
         self.assertEqual(SafetyFinder().advice_for_alex(agents),
                          'The whole city is safe for Alex! :-)')
 
+    def test_two_agents_but_only_one_outside_map(self):
+        """Test when only a single agent remains in the city"""
+        agents = ['A1', 'M5']
+        self.assertEqual(sorted(SafetyFinder().advice_for_alex(agents)),
+                         sorted(['J10']))
 
 if __name__ == '__main__':
     unittest.main()

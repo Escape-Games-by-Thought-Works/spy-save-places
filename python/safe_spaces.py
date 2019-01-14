@@ -28,6 +28,13 @@ class SafetyFinder:
 
         return coordinates
 
+    def convert_coordinates_to_alphanumeric(self, agents):
+        alphanumperics = []
+        for agent in agents:
+            alphanumperics.append(chr(agent[0] + ord('A')) + str(agent[1]+1))
+
+        return alphanumperics
+
     def find_safe_spaces(self, agents):
         """This method will take an array with agent locations and find
         the safest places in the city for Alex to hang out.
@@ -82,7 +89,9 @@ class SafetyFinder:
         if self.is_agent_outside_map(agents[0]):
             return  'The whole city is safe for Alex! :-)'
 
-        return []
+        safeSpaces = self.find_safe_spaces(agents)
+
+        return self.convert_coordinates_to_alphanumeric(safeSpaces)
 
     def is_agent_outside_map(self, agent):
         return agent[0] >= self.MAP_SIZE or agent[1] >= self.MAP_SIZE

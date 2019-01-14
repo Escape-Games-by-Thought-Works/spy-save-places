@@ -75,14 +75,12 @@ class SafetyFinderTest(unittest.TestCase):
         self.assertEqual(SafetyFinder().advice_for_alex(agents),
                          'There are no safe locations for Alex! :-(')
 
-    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_advice_round1(self):
         """Test for six agents at specified locations"""
         agents = ['B2', 'D6', 'E9', 'H4', 'H9', 'J2']
         self.assertEqual(sorted(SafetyFinder().advice_for_alex(agents)),
                          sorted(['A10', 'A8', 'F1']))
 
-    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_advice_round2(self):
         """Test for seven agents at specified locations"""
         agents = ['B4', 'C4', 'C8', 'E2', 'F10', 'H1', 'J6']
@@ -90,14 +88,12 @@ class SafetyFinderTest(unittest.TestCase):
                          sorted(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5',
                                  'G7', 'H8', 'I9', 'J10']))
 
-    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_advice_round3(self):
         """Test for a different six agents at specified locations"""
         agents = ['A1', 'A10', 'B6', 'F2', 'J1', 'J10']
         self.assertEqual(sorted(SafetyFinder().advice_for_alex(agents)),
                          sorted(['F8', 'G7', 'H6']))
 
-    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_advice_round4(self):
         """Test when only a single agent remains in the city"""
         agents = ['A1']

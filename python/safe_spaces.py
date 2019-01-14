@@ -1,6 +1,9 @@
 """Solve the spy game!"""
 
 class SafetyFinder:
+
+    MAP_SIZE = 10
+
     """A class that contains everything we need to find the
     safest places in the city for Alex to hide out
     """
@@ -50,4 +53,15 @@ class SafetyFinder:
         Returns either a list of alphanumeric map coordinates for Alex to hide in,
         or a specialized message informing her of edge cases
         """
-        pass
+        agents = self.convert_coordinates(agents)
+
+        if len(agents) == 0:
+            return  'The whole city is safe for Alex! :-)'
+
+        if self.is_agent_outside_map(agents[0]):
+            return  'The whole city is safe for Alex! :-)'
+
+        return []
+
+    def is_agent_outside_map(self, agent):
+        return agent[0] >= self.MAP_SIZE or agent[1] >= self.MAP_SIZE

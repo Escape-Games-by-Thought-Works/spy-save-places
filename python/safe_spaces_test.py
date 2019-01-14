@@ -57,7 +57,6 @@ class SafetyFinderTest(unittest.TestCase):
                          sorted([[9, 9]]))
 
     # Level 3 -- Handling edge cases and offering recommendations
-    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_no_agents(self):
         """Tests for no agents in the city"""
         self.assertEqual(SafetyFinder().advice_for_alex([]),
@@ -108,10 +107,15 @@ class SafetyFinderTest(unittest.TestCase):
         self.assertEqual(sorted(SafetyFinder().advice_for_alex(agents)),
                          sorted(['J10']))
 
-    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_agent_outside_map(self):
         """Test when only a single agent remains in the city"""
         agents = ['A12']
+        self.assertEqual(SafetyFinder().advice_for_alex(agents),
+                         'The whole city is safe for Alex! :-)')
+
+    def test_two_agents_outside_map(self):
+        """Test when only a single agent remains in the city"""
+        agents = ['A12', 'M5']
         self.assertEqual(SafetyFinder().advice_for_alex(agents),
                          'The whole city is safe for Alex! :-)')
 

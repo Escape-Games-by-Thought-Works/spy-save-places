@@ -91,6 +91,9 @@ class SafetyFinder:
 
         safeSpaces = self.find_safe_spaces(agents)
 
+        if len(safeSpaces) == self.MAP_SIZE ** 2:
+            return "There are no safe locations for Alex! :-("
+
         return self.convert_coordinates_to_alphanumeric(safeSpaces)
 
     def is_agent_outside_map(self, agent):

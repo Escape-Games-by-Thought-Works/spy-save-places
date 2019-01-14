@@ -59,7 +59,6 @@ class SafetyFinderTest(unittest.TestCase):
         self.assertEqual(SafetyFinder().advice_for_alex([]),
                          'The whole city is safe for Alex! :-)')
 
-    @unittest.skip("Comment or delete this line to solve the challenge with python")
     def test_agents_everywhere(self):
         """Tests for agents everywhere in the city. Oh no!!"""
         agents = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10',

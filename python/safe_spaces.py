@@ -82,19 +82,27 @@ class SafetyFinder:
         or a specialized message informing her of edge cases
         """
         agents = self.convert_coordinates(agents)
+        agentsInsideMap = self.filter_agents_outside_map(agents)
 
-        if len(agents) == 0:
+        if len(agentsInsideMap) == 0:
             return  'The whole city is safe for Alex! :-)'
 
-        if self.is_agent_outside_map(agents[0]):
-            return  'The whole city is safe for Alex! :-)'
-
-        safeSpaces = self.find_safe_spaces(agents)
+        safeSpaces = self.find_safe_spaces(agentsInsideMap)
 
         if len(safeSpaces) == self.MAP_SIZE ** 2:
             return "There are no safe locations for Alex! :-("
 
         return self.convert_coordinates_to_alphanumeric(safeSpaces)
+
+    def filter_agents_outside_map(self, agents):
+        insideMap = []
+        for agent in agents:
+            if self.is_agent_outside_map(agent):
+                continue
+
+            insideMap.append(agent)
+
+        return insideMap
 
     def is_agent_outside_map(self, agent):
         return agent[0] >= self.MAP_SIZE or agent[1] >= self.MAP_SIZE

@@ -29,32 +29,6 @@ class Script
     const GRID_WIDTH = 10;
     const GRID_HEIGHT = 10;
 
-    private $allowedColumns = [
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'J'
-    ];
-
-    private $allowedRows = [
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '10'
-    ];
-
     /**
      *
      * @param array $argv
@@ -65,7 +39,7 @@ class Script
         foreach ($argvs as $argv) {
             $column = mb_substr($argv, 0, 1);
             $row = mb_substr($argv, 1);
-            if (!(in_array($column, $this->allowedColumns) && in_array($row, $this->allowedRows))) {
+            if (preg_match("/^[A-Z]+$/", $column) !== 1 || preg_match("/^[0-9]+$/", $row) !== 1) {
             throw new InvalidInput(sprintf('Invalid Input %s%s', $column, $row));
             }
         }

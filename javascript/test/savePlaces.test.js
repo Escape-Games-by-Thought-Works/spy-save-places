@@ -2,7 +2,7 @@ const { convertCoordinates, findSafePlaces, adviceForAlex } = require('../src/sa
 
 // Please enable Level 1, 2, 3-Tests by replacing xdescribe with describe!
 // Do not edit the tests itself!
-describe('Spy Places Level 1 - convert coordinates', () => {
+xdescribe('Spy Places Level 1 - convert coordinates', () => {
   it('no agents return empty array', () => {
     expect(convertCoordinates([])).toEqual([])
   })
@@ -23,7 +23,7 @@ describe('Spy Places Level 1 - convert coordinates', () => {
   })
 })
 
-xdescribe('Spy Places Level 2 - find save places', () => {
+describe('Spy Places Level 2 - find save places', () => {
   it('some places are save if agents are some', () => {
     const agents = [[1, 1], [3, 5], [4, 8], [7, 3], [7, 8], [9, 1]]
     expect(findSafePlaces(agents).length).toEqual(3)

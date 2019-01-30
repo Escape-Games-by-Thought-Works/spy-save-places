@@ -56,7 +56,7 @@ class SafetyFinder:
                     map[column, row] = min(map[column, row], distance)
 
         # Now find the longest distance
-        longest_distance = 1
+        longest_distance = 0
         for row in range(10):
             for column in range(10):
                 longest_distance = max(longest_distance, map[column, row])
@@ -92,7 +92,6 @@ class SafetyFinder:
             return "The whole city is safe for Alex! :-)"
         if distance == 0:
             return "There are no safe locations for Alex! :-("
-
 
         safe_spaces = self.convert_coordinates_reverse(safe_spaces_indexed)
         print(safe_spaces)

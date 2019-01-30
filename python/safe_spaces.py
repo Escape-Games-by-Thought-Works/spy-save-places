@@ -4,6 +4,9 @@ import numpy
 class SafetyFinder:
     """A class that contains everything we need to find the
     safest places in the city for Alex to hide out
+
+    This solution is roughly modeled after the IODA architecture from Ralph Westphal
+    and using many advice from the Clean Code sessions from Robert C. Martin
     """
 
     def convert_coordinates(self, agents):

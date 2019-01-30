@@ -16,12 +16,12 @@ class SafetyFinder:
 
         Returns a list of coordinates in zero-indexed vector form.
         """
-        positions = []
-        for coordinate in agents:
-            positions.append([ord(coordinate[0])-ord("A"), int(coordinate[1:])-1])
-        return positions
+        coordinates = []
+        for agent in agents:
+            coordinates.append([ord(agent[0])-ord("A"), int(agent[1:])-1])
+        return coordinates
 
-    def convert_coordinates_reverse(self, agents):
+    def convert_agents(self, agents):
         positions = []
         for coordinate in agents:
             positions.append(chr(coordinate[0]+ord("A")) + str(coordinate[1]+1))
@@ -67,10 +67,6 @@ class SafetyFinder:
             for column in range(10):
                 if map[column, row] == longest_distance:
                     coordinates.append([row, column])
-        print(map)
-        print(longest_distance)
-        print(coordinates)
-
         return longest_distance, coordinates
 
     def advice_for_alex(self, agents):
@@ -93,7 +89,7 @@ class SafetyFinder:
         if distance == 0:
             return "There are no safe locations for Alex! :-("
 
-        safe_spaces = self.convert_coordinates_reverse(safe_spaces_indexed)
+        safe_spaces = self.convert_agents(safe_spaces_indexed)
         print(safe_spaces)
         return safe_spaces
 

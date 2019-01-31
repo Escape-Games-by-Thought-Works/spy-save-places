@@ -69,14 +69,12 @@ class SafetyFinder:
         """
         maxvalue = self.city_rows + self.city_columns - 1  # One bigger then the longest distance from one corner of the city to the other
         city_map = numpy.full((self.city_rows, self.city_columns), maxvalue)
-
         self._fill_map_with_distance_to_agents(city_map, agents)
         longest_distance = self._find_longest_distance(city_map)
         safe_spaces = self._filter_coordinates_with_longest_distance(city_map, longest_distance)
         return longest_distance, safe_spaces
 
-    @staticmethod
-    def _fill_map_with_distance_to_agents(city_map, agents):
+    def _fill_map_with_distance_to_agents(self, city_map, agents):
         """This method will take a city_map as a 2d array and a list of agent location as coordinates in zero-indexed vector form
         and fill the city_map with the distance to the closest agent for any coordinate in the map.
 
@@ -87,8 +85,8 @@ class SafetyFinder:
             e.g. [0, 5], [3, 7], etc.
         """
         for agent in agents:
-            for row in range(10):
-                for column in range(10):
+            for row in range(self.city_rows):
+                for column in range(self.city_columns):
                     distance_row = row - agent[0]
                     distance_column = column - agent[1]
                     distance = abs(distance_row) + abs(distance_column)

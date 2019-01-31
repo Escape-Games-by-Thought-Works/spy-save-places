@@ -12,6 +12,7 @@ class SafetyFinder:
     def __init__(self, city_rows=10, city_columns=10):
         self.city_rows = city_rows
         self.city_columns = city_columns
+        self.totally_safe_distance = self.city_rows + self.city_columns - 1  # One bigger then the longest distance from one corner of the city to the other
 
     def convert_coordinates(self, agents):
         """This method should take a list of alphanumeric coordinates (e.g. 'A6')
@@ -67,8 +68,7 @@ class SafetyFinder:
 
         Returns the longest possible distance to an agent and a list of safe spaces
         """
-        maxvalue = self.city_rows + self.city_columns - 1  # One bigger then the longest distance from one corner of the city to the other
-        city_map = numpy.full((self.city_rows, self.city_columns), maxvalue)
+        city_map = numpy.full((self.city_rows, self.city_columns), self.totally_safe_distance)
         self._fill_map_with_distance_to_agents(city_map, agents)
         longest_distance = self._find_longest_distance(city_map)
         safe_spaces = self._filter_coordinates_with_longest_distance(city_map, longest_distance)
@@ -134,7 +134,7 @@ class SafetyFinder:
 
         Returns a list of coordinates in alphanumeric vector form.
         """
-        if distance == 19:
+        if distance == self.totally_safe_distance:
             return "The whole city is safe for Alex! :-)"
         if distance == 0:
             return "There are no safe locations for Alex! :-("

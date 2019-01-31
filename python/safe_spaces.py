@@ -1,18 +1,26 @@
 """Solve the spy game!"""
 import numpy
 
+
 class SafetyFinder:
     """A class that contains everything we need to find the
     safest places in the city for Alex to hide out
 
-    This solution is roughly modeled after the IODA architecture from Ralph Westphal
+    This solution is roughly modeled after the IODA architecture from Ralf Westphal
     and using many advice from the Clean Code sessions from Robert C. Martin
     """
 
     def __init__(self, city_rows=10, city_columns=10):
+        """
+        Initialize some constants we need in the calculations
+
+        Arguments:
+        city_rows -- variable width of the city map with default value
+        city_columns -- variable height of the city map with default value
+        """
         self.city_rows = city_rows
         self.city_columns = city_columns
-        self.totally_safe_distance = self.city_rows + self.city_columns - 1  # One bigger then the longest distance from one corner of the city to the other
+        self.totally_safe_distance = self.city_rows + self.city_columns - 1  # One bigger then distance from one corner of the city to the other
 
     def convert_coordinates(self, agents):
         """This method should take a list of alphanumeric coordinates (e.g. 'A6')
@@ -79,7 +87,7 @@ class SafetyFinder:
         and fill the city_map with the distance to the closest agent for any coordinate in the map.
 
         Arguments:
-        city_map -- a 2d array of the city
+        city_map -- a 2d array of the city initialized to a distance one longer then the longest possible distance
         agents -- a list-like object containing the map coordinates of agents.
             Each entry should be formatted in indexed vector form,
             e.g. [0, 5], [3, 7], etc.
@@ -112,7 +120,7 @@ class SafetyFinder:
 
         Arguments:
         city_map -- a 2d array of the city
-        longest_distance -- longest distance found
+        longest_distance -- longest distance in city_map
 
         Returns a list of safe spaces
         """
@@ -124,15 +132,15 @@ class SafetyFinder:
         return safe_spaces
 
     def _calculate_response_for_alex(self, distance, safe_spaces):
-        """This method should take the distance between the safe places and the agents and an array of arrays with zero-indexing coordinates (e.g. [0, 5])
-        and return either a text response for the corner cases or a list of alphanumeric coordinates (e.g. 'A6') of safe places .
+        """This method should take the distance between the safe spaces and the agents and an array of arrays with zero-indexing coordinates (e.g. [0, 5])
+        and return either a text response for the corner cases or a list of alphanumeric coordinates (e.g. 'A6') of safe places.
         For instance, [0, 5] should become 'A6'
 
         Arguments:
-        distance -- distance between the safe places and the agents
+        distance -- distance between the safe spaces and the agents
         agents -- a list-like object containing zero-indexing coordinates of safe places.
 
-        Returns a list of coordinates in alphanumeric vector form.
+        Returns a list of safe spaces coordinates in alphanumeric vector form.
         """
         if distance == self.totally_safe_distance:
             return "The whole city is safe for Alex! :-)"

@@ -36,7 +36,7 @@ class SafetyFinder:
 
         Returns a list of safe spaces in indexed vector form.
         """
-        _, safe_spaces = self._find_safe_spaces_with_distance(agents)
+        _, safe_spaces = self._find_distance_and_safe_spaces(agents)
         return safe_spaces
 
     def advice_for_alex(self, agents):
@@ -52,15 +52,22 @@ class SafetyFinder:
         or a specialized message informing her of edge cases
         """
         agents = self.convert_coordinates(agents)
-        distance, safe_spaces = self._find_safe_spaces_with_distance(agents)
+        distance, safe_spaces = self._find_distance_and_safe_spaces(agents)
         response = self._calculate_response_for_alex(distance, safe_spaces)
         return response
 
-    def _find_safe_spaces_with_distance(self, agents):
+
+    def _find_distance_and_safe_spaces(self, agents):
         maxvalue = self.city_rows + self.city_columns - 1  # From one corner of the city to the other
         city_map = numpy.full((self.city_rows, self.city_columns), maxvalue)
 
-        # Now fill the map with distances for each agent if it is smaller then already set
+        self._fill_map_with_distance_to_agents(city_map, agents)
+        longest_distance = self._find_longest_distance(city_map)
+        safe_spaces = self._filter_coordinates_with_longest_distance(city_map, longest_distance)
+        return longest_distance, safe_spaces
+
+    # Now fill the map with distances for each agent if it is smaller then already set
+    def _fill_map_with_distance_to_agents(self, city_map, agents):
         for agent in agents:
             for row in range(10):
                 for column in range(10):
@@ -69,19 +76,22 @@ class SafetyFinder:
                     distance = abs(distance_row) + abs(distance_column)
                     city_map[column, row] = min(city_map[column, row], distance)
 
-        # Now find the longest distance
+    # Now find the longest distance
+    def _find_longest_distance(self, city_map):
         longest_distance = 0
-        for row in range(10):
-            for column in range(10):
+        for row in range(self.city_rows):
+            for column in range(self.city_columns):
                 longest_distance = max(longest_distance, city_map[column, row])
+        return longest_distance
 
-        # Filter coordinates with longest distance
+    # Filter coordinates with longest distance
+    def _filter_coordinates_with_longest_distance(self, city_map, longest_distance):
         safe_spaces = []
-        for row in range(10):
-            for column in range(10):
+        for row in range(self.city_rows):
+            for column in range(self.city_columns):
                 if city_map[column, row] == longest_distance:
                     safe_spaces.append([row, column])
-        return longest_distance, safe_spaces
+        return safe_spaces
 
     def _calculate_response_for_alex(self, distance, safe_spaces):
         """This method should take the distance between the safe places and the agents and an array of arrays with zero-indexing coordinates (e.g. [0, 5])

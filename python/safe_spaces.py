@@ -58,7 +58,7 @@ class SafetyFinder:
 
     def _find_safe_spaces_with_distance(self, agents):
         maxvalue = self.city_rows + self.city_columns - 1  # From one corner of the city to the other
-        map = numpy.full((self.city_rows, self.city_columns), maxvalue)
+        city_map = numpy.full((self.city_rows, self.city_columns), maxvalue)
 
         # Now fill the map with distances for each agent if it is smaller then already set
         for agent in agents:
@@ -67,19 +67,19 @@ class SafetyFinder:
                     distance_row = row - agent[0]
                     distance_column = column - agent[1]
                     distance = abs(distance_row) + abs(distance_column)
-                    map[column, row] = min(map[column, row], distance)
+                    city_map[column, row] = min(city_map[column, row], distance)
 
         # Now find the longest distance
         longest_distance = 0
         for row in range(10):
             for column in range(10):
-                longest_distance = max(longest_distance, map[column, row])
+                longest_distance = max(longest_distance, city_map[column, row])
 
         # Filter coordinates with longest distance
         safe_spaces = []
         for row in range(10):
             for column in range(10):
-                if map[column, row] == longest_distance:
+                if city_map[column, row] == longest_distance:
                     safe_spaces.append([row, column])
         return longest_distance, safe_spaces
 

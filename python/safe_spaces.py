@@ -77,59 +77,27 @@ class SafetyFinder:
         Returns the longest possible distance to an agent and a list of safe spaces
         """
         city_map = numpy.full((self.city_rows, self.city_columns), self.totally_safe_distance)
-        self._fill_map_with_distance_to_agents(city_map, agents)
-        longest_distance = self._find_longest_distance(city_map)
-        safe_spaces = self._filter_coordinates_with_longest_distance(city_map, longest_distance)
-        return longest_distance, safe_spaces
+        return self._find_safe_spaces_one_pass(city_map, agents)
 
-    def _fill_map_with_distance_to_agents(self, city_map, agents):
-        """This method will take a city_map as a 2d array and a list of agent location as coordinates in zero-indexed vector form
-        and fill the city_map with the distance to the closest agent for any coordinate in the map.
-
-        Arguments:
-        city_map -- a 2d array of the city initialized to a distance one longer then the longest possible distance
-        agents -- a list-like object containing the map coordinates of agents.
-            Each entry should be formatted in indexed vector form,
-            e.g. [0, 5], [3, 7], etc.
-        """
-        for agent in agents:
-            for row in range(self.city_rows):
-                for column in range(self.city_columns):
+    def _find_safe_spaces_one_pass(self, city_map, agents):
+        longest_distance = 0
+        safe_spaces = []
+        # Iterate over every coordinate in the map
+        for row in range(self.city_rows):
+            for column in range(self.city_columns):
+                # calculate distance to each agent
+                for agent in agents:
                     distance_row = row - agent[0]
                     distance_column = column - agent[1]
                     distance = abs(distance_row) + abs(distance_column)
                     city_map[column, row] = min(city_map[column, row], distance)
-
-    def _find_longest_distance(self, city_map):
-        """This method will take a city_map as a 2d array and return the longest distance it finds.
-
-        Arguments:
-        city_map -- a 2d array of the city
-
-        Returns the longest possible distance to an agent
-        """
-        longest_distance = 0
-        for row in range(self.city_rows):
-            for column in range(self.city_columns):
-                longest_distance = max(longest_distance, city_map[column, row])
-        return longest_distance
-
-    def _filter_coordinates_with_longest_distance(self, city_map, longest_distance):
-        """This method will take a city_map as a 2d array and the longest distance to an agent
-        and return a list of safe spaces.
-
-        Arguments:
-        city_map -- a 2d array of the city
-        longest_distance -- longest distance in city_map
-
-        Returns a list of safe spaces
-        """
-        safe_spaces = []
-        for row in range(self.city_rows):
-            for column in range(self.city_columns):
-                if city_map[column, row] == longest_distance:
+                current_distance = city_map[column, row]
+                if current_distance > 0 and current_distance == longest_distance:
                     safe_spaces.append([row, column])
-        return safe_spaces
+                if current_distance > longest_distance:
+                    longest_distance = current_distance
+                    safe_spaces = [[row, column]]
+        return longest_distance, safe_spaces
 
     def _calculate_response_for_alex(self, distance, safe_spaces):
         """This method should take the distance between the safe spaces and the agents and an array of arrays with zero-indexing coordinates (e.g. [0, 5])

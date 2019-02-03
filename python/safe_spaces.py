@@ -142,8 +142,15 @@ class SafetyFinder:
         return longest_distance, safe_spaces
 
     @classmethod
-    def is_safe_distance(cls, current_distance):
-        return current_distance > 0
+    def is_safe_distance(cls, distance):
+        """This method takes a distance and returns if it is safe.
+
+        Arguments:
+        distance -- a distance
+
+        Returns if the distance is safe
+        """
+        return distance > 0
 
     def _calculate_response_for_alex(self, distance, safe_spaces):
         """This method should take the distance between the safe spaces and the agents and an array of arrays with zero-indexing coordinates (e.g. [0, 5])

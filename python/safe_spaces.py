@@ -85,12 +85,9 @@ class SafetyFinder:
         # Iterate over every coordinate in the map
         for row in range(self.city_rows):
             for column in range(self.city_columns):
-                # calculate distance to each agent
+                # calculate distance to each agent and save the lowest value
                 for agent in agents:
-                    distance_row = row - agent[0]
-                    distance_column = column - agent[1]
-                    distance = abs(distance_row) + abs(distance_column)
-                    city_map[column, row] = min(city_map[column, row], distance)
+                    city_map[column, row] = min(city_map[column, row], self.agent_distance(column, row, agent))
                 current_distance = city_map[column, row]
                 if current_distance > 0 and current_distance == longest_distance:
                     safe_spaces.append([row, column])
@@ -98,6 +95,12 @@ class SafetyFinder:
                     longest_distance = current_distance
                     safe_spaces = [[row, column]]
         return longest_distance, safe_spaces
+
+    def agent_distance(self, column, row, agent):
+        distance_row = row - agent[0]
+        distance_column = column - agent[1]
+        distance = abs(distance_row) + abs(distance_column)
+        return distance
 
     def _calculate_response_for_alex(self, distance, safe_spaces):
         """This method should take the distance between the safe spaces and the agents and an array of arrays with zero-indexing coordinates (e.g. [0, 5])

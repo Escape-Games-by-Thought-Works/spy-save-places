@@ -1,5 +1,4 @@
 """Solve the spy game!"""
-import numpy
 
 
 class SafetyFinder:
@@ -76,38 +75,75 @@ class SafetyFinder:
 
         Returns the longest possible distance to an agent and a list of safe spaces
         """
-        city_map = numpy.full((self.city_rows, self.city_columns), self.totally_safe_distance)
-        return self._find_safe_spaces_one_pass(city_map, agents)
-
-    def _find_safe_spaces_one_pass(self, city_map, agents):
         longest_distance = 0
         safe_spaces = []
         # Iterate over every coordinates in the map
         for row in range(self.city_rows):
             for column in range(self.city_columns):
-                shortest_distance = self._shortest_agent_distance(agents, column, row, city_map[column, row])
-                longest_distance, safe_spaces = self._update_safe_spaces(shortest_distance, longest_distance, safe_spaces, [row, column])
+                current_distance = self._shortest_agents_distance(row, column, agents)
+                longest_distance, safe_spaces = self._update_safe_spaces(row, column, current_distance, longest_distance, safe_spaces)
         return longest_distance, safe_spaces
 
-    def _shortest_agent_distance(self, agents, column, row, current_value):
-        for agent in agents:
-            current_value = min(current_value, self._agent_distance(column, row, agent))
-        return current_value
+    def _shortest_agents_distance(self, row, column, agents):
+        """This method will take a row and column on the map and a list of agent location as coordinates in zero-indexed vector form
+        and return the shortest possible distance to the agents from the position on the map.
 
-    def _agent_distance(self, column, row, agent):
+        Arguments:
+        row -- the current row in the city
+        column -- the current column in the city
+        agents -- a list-like object containing the map coordinates of agents.
+            Each entry should be formatted in indexed vector form,
+            e.g. [0, 5], [3, 7], etc.
+
+        Returns the shortest possible distance to the agents from the position on the map
+        """
+        shortest_distance = self.totally_safe_distance
+        for agent in agents:
+            shortest_distance = min(shortest_distance, self._agent_distance(row, column, agent))
+        return shortest_distance
+
+    @classmethod
+    def _agent_distance(cls, row, column, agent):
+        """This method will take a row and column on the map and an agent location as coordinates in zero-indexed vector form
+        and return the distance to the agent from the position on the map.
+
+        Arguments:
+        row -- the current row in the city
+        column -- the current column in the city
+        agent -- the coordinates of an agent.
+
+        Returns the distance to the agent from the position on the map
+        """
         distance_row = row - agent[0]
         distance_column = column - agent[1]
         distance = abs(distance_row) + abs(distance_column)
         return distance
 
-    def _update_safe_spaces(self, current_distance, longest_distance, safe_spaces, coordinates):
-        if current_distance > 0 and current_distance == longest_distance:
-            safe_spaces.append(coordinates)
+    @classmethod
+    def _update_safe_spaces(cls, row, column, current_distance, longest_distance, safe_spaces):
+        """This method will take a row and column on the map and the current distance to the nearest agent
+        and the longest distance to agents found so far and a list of safe spaces found so far as coordinates in zero-indexed vector form
+        and return the new longest distance to agents and safe spaces.
+
+        Arguments:
+        row -- the current row in the city
+        column -- the current column in the city
+        current_distance -- current distance to nearest agent for coordinates
+        longest_distance -- longest distance to agents found so far
+        safe_spaces -- safe spaces found so far for longest_distance
+
+        Returns the new longest distance to the agents and safe spaces
+        """
+        if cls.is_safe_distance(current_distance) and current_distance == longest_distance:
+            safe_spaces.append([row, column])
         if current_distance > longest_distance:
             longest_distance = current_distance
-            safe_spaces = [coordinates]
-
+            safe_spaces = [[row, column]]
         return longest_distance, safe_spaces
+
+    @classmethod
+    def is_safe_distance(cls, current_distance):
+        return current_distance > 0
 
     def _calculate_response_for_alex(self, distance, safe_spaces):
         """This method should take the distance between the safe spaces and the agents and an array of arrays with zero-indexing coordinates (e.g. [0, 5])
@@ -126,8 +162,8 @@ class SafetyFinder:
             return "There are no safe locations for Alex! :-("
         return self._convert_agents(safe_spaces)
 
-    @staticmethod
-    def _convert_agents(agents):
+    @classmethod
+    def _convert_agents(cls, agents):
         """This method should take an array of arrays with zero-indexing coordinates (e.g. [0, 5])
         and return a list of coordinates converted to alphanumeric coordinates.
         For instance, [0, 5] should become 'A6'

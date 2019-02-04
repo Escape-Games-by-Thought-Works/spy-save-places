@@ -1,4 +1,5 @@
 """Solve the spy game!"""
+from functools import reduce
 
 
 class SafetyFinder:
@@ -97,10 +98,8 @@ class SafetyFinder:
 
         Returns the shortest possible distance to the agents from the position on the map
         """
-        shortest_distance = self.totally_safe_distance
-        for agent in agents:
-            shortest_distance = min(shortest_distance, self._agent_distance(position, agent))
-        return shortest_distance
+        distances = map(lambda x: self._agent_distance(position, x), agents)
+        return reduce(lambda x, y: min(x, y), distances, self.totally_safe_distance)
 
     @classmethod
     def _agent_distance(cls, position, agent):
@@ -115,8 +114,7 @@ class SafetyFinder:
         """
         distance_row = position[0] - agent[0]
         distance_column = position[1] - agent[1]
-        distance = abs(distance_row) + abs(distance_column)
-        return distance
+        return abs(distance_row) + abs(distance_column)
 
     @classmethod
     def _update_safe_spaces(cls, position, current_distance, longest_distance, safe_spaces):

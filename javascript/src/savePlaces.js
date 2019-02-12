@@ -1,18 +1,10 @@
-// This is where you implement your solution 
-const convertCoordinates = (agents) => {
-  return [[0,0],[1,2]]
-}
-
-const findSafePlaces = (agents) => {
-  return "findSafePlaces"
-}
-
-const adviceForAlex = (agents) => {
-  return "adviceForAlex"
-}
+const { convertCoordinates } = require('./convertCoordinates.js');
+const { findSafePlaces } = require('./findSafePlaces.js');
+const { adviceForAlex } = require('./adviceForAlex.js');
 
 module.exports = {
   convertCoordinates,
   findSafePlaces,
   adviceForAlex
-}
+};
+

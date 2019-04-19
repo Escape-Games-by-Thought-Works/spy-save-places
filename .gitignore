@@ -2,3 +2,4 @@ node_modules
 .bundle/*
 .DS_Store
 javascript/src/debug.js
+.vscode/launch.json

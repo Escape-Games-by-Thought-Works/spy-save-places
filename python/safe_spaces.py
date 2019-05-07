@@ -7,13 +7,15 @@ class SafetyFinder:
 
     def convert_coordinates(self, agents):
         """This method should take a list of alphanumeric coordinates (e.g. 'A6')
-        and return an array of the coordinates converted to arrays with zero-indexing.
-        For instance, 'A6' should become [0, 5]
+        or zero-indexed coordinates (e.g. [0,5]) and converts them into the
+        other format. For instance, ['A6','A7'] should become [[0,5],[0,6]] 
+        and vice versa.
 
         Arguments:
-        agents -- a list-like object containing alphanumeric coordinates.
+        agents -- a list-like object containing either only alphanumeric coordinates
+        (e.g. 'A6') or only zero-indexed coordinates (e.g. [0,5]).
 
-        Returns a list of coordinates in zero-indexed vector form.
+        Returns a list of coordinates in the complimentary format
         """
         ans = []
         if(agents == []):
@@ -33,7 +35,7 @@ class SafetyFinder:
         
         
     def agent_filter(self,agent):
-        """This method returns true if zero-indexed coordinates are on a 
+        """This method returns true iff zero-indexed coordinates are on a 
         10 x 10 field and false if they aren't. For example, the output for
         (5,0) should be true, but for (-3,8) or (10,10) it should be false.   
 

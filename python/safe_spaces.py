@@ -20,7 +20,7 @@ class SafetyFinder:
             return agents
         elif(isinstance(agents[0],str)):
             for agent in agents:
-                ycoord = ord(agent[0]) - 65
+                ycoord = ord(agent[0].upper()) - 65
                 xcoord = int(agent[1:]) - 1
                 ans.append([ycoord,xcoord])
             return ans
@@ -30,7 +30,8 @@ class SafetyFinder:
                 xcoord = str(agent[1] + 1)
                 ans.append(ycoord + xcoord)
             return ans
-         
+        
+        
     def agent_filter(self,agent):
         """This method returns true if zero-indexed coordinates are on a 
         10 x 10 field and false if they aren't. For example, the output for
@@ -43,6 +44,7 @@ class SafetyFinder:
         """
         return agent[0] > -1 and agent[0] < 10 and agent[1] > -1 and agent[1] < 10
     
+    
     def propagate_agents(self, added_agents, all_agents):
         """This method takes in a set of coordinates all_agents and returns a 
         set of all coordinates with a manhattan-distance of one of any of the 
@@ -53,7 +55,7 @@ class SafetyFinder:
         Arguments:
         added_agents -- a set of zero-indexed coordinates of the agents added 
         in the last step. added_agents has to be a subset of all_agents. If it
-        is unknown, which agents were previously added, added_agents should be
+        is unknown which agents were previously added, added_agents should be
         set to all_agents.
         all_agents -- a set of zero-indexed coordinates of all currently 
         existing agents.
@@ -67,7 +69,7 @@ class SafetyFinder:
                                (agent[0]+1,agent[1]),
                                (agent[0],agent[1]-1),
                                (agent[0],agent[1]+1)])
-            new_agents = set(filter(self.agent_filter, new_agents))
+        new_agents = set(filter(self.agent_filter, new_agents))
         return new_agents.difference(all_agents)
     
     
@@ -105,7 +107,7 @@ class SafetyFinder:
         agents = filter(self.agent_filter, self.convert_coordinates(agents))
         if(agents == []):
             return "The whole city is safe for Alex! :-)"
-        elif(len(agents) >= 100):
+        elif(len(set(map(tuple, agents))) >= 100):
             return "There are no safe locations for Alex! :-("
         return self.convert_coordinates(self.find_safe_spaces(agents))
 

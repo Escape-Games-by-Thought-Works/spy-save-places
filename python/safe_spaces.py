@@ -106,7 +106,7 @@ class SafetyFinder:
         Returns either a list of alphanumeric map coordinates for Alex to hide in,
         or a specialized message informing her of edge cases
         """
-        agents = filter(self.agent_filter, self.convert_coordinates(agents))
+        agents = list(filter(self.agent_filter, self.convert_coordinates(agents)))
         if(agents == []):
             return "The whole city is safe for Alex! :-)"
         elif(len(set(map(tuple, agents))) >= 100):

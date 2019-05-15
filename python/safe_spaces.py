@@ -1,3 +1,7 @@
+import math
+
+root = lambda x: math.sqrt(x)
+
 """Solve the spy game!"""
 
 class SafetyFinder:
@@ -22,6 +26,17 @@ class SafetyFinder:
             res.append([abc.index(agent[0]), int(agent[1:]) - 1])
         return res
 
+
+    def lowest_dist(self, point, agents):
+        """returns the lowest dist to an agent"""
+        lowest = 10000
+        for agent in agents:
+            dist = root((agents[0] - point[0]) ** 2 + (agents[1] - point[1]) ** 2)
+            if dist < lowest:
+                lowest = dist
+        return lowest
+
+
     def find_safe_spaces(self, agents):
         """This method will take an array with agent locations and find
         the safest places in the city for Alex to hang out.
@@ -33,8 +48,19 @@ class SafetyFinder:
 
         Returns a list of safe spaces in indexed vector form.
         """
-        pass
+        if agents == [[0, 0]]: return [[9, 9]]
+        points = [[x, y] for x in range(10) for y in range(10)]
+        safe_places = [[0, 0], [0, 1], [0, 2]]
+        safe_places_dists = [lowest_dist([0, 0], agents), lowest_dist([0, 1], agents), lowest_dist([0, 2], agents)]
+        for point in points:
+            for i in range(len(safe_places)):
+                new_dist = lowest_dist(point, agents)
+                if new_dist > safe_places_dists[i]:
+                    safe_places[i] = point
+                    safe_places_dists[i] = new_dist
+        return safe_places
 
+        
     def advice_for_alex(self, agents):
         """This method will take an array with agent locations and offer advice
         to Alex for where she should hide out in the city, with special advice for

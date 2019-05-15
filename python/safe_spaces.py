@@ -15,10 +15,11 @@ class SafetyFinder:
 
         Returns a list of coordinates in zero-indexed vector form.
         """
+        if agents == []: return []
         abc = [char for char in "abcdefghijklmnopqrstuvwxyz".upper()]
         res = []
         for agent in agents:
-            res.append([abc.index(agent[0]), int(agent[1]) - 1])
+            res.append([abc.index(agent[0]), int(agent[1:]) - 1])
         return res
 
     def find_safe_spaces(self, agents):

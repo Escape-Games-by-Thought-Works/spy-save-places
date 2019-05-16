@@ -52,8 +52,7 @@ class SafetyFinder:
         points = [[x, y] for x in range(10) for y in range(10)]
         res = []
         for point in points:
-            for i in range(len(safe_places)):
-                res.append(self.lowest_dist(point, agents))
+            res.append(self.lowest_dist(point, agents))
         res, points = (list(t) for t in zip(*sorted(zip(res, points))))
         return points[-3:]
 

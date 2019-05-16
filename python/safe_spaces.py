@@ -1,6 +1,5 @@
 import math
-
-root = lambda x: math.sqrt(x)
+from functools import reduce
 
 """Solve the spy game!"""
 
@@ -19,22 +18,14 @@ class SafetyFinder:
 
         Returns a list of coordinates in zero-indexed vector form.
         """
-        if agents == []: return []
         abc = [char for char in "abcdefghijklmnopqrstuvwxyz".upper()]
-        res = []
-        for agent in agents:
-            res.append([abc.index(agent[0]), int(agent[1:]) - 1])
-        return res
+        return [[abc.index(agent[0]), int(agent[1:]) - 1] for agent in agents]
 
 
     def lowest_dist(self, point, agents):
-        """returns the lowest dist to an agent"""
-        lowest = 10000
-        for agent in agents:
-            dist = root((agent[0] - point[0]) ** 2 + (agent[1] - point[1]) ** 2)
-            if dist < lowest:
-                lowest = dist
-        return lowest
+        """returns the lowest possible distance to an agent"""
+        dist = lambda a, b: abs(a[0] - b[0]) + abs(a[1] - b[1])
+        return reduce(lambda x, y: x if x < y else y, [dist(point, agent) for agent in agents])
 
 
     def find_safe_spaces(self, agents):
@@ -48,13 +39,13 @@ class SafetyFinder:
 
         Returns a list of safe spaces in indexed vector form.
         """
-        if agents == [[0, 0]]: return [[9, 9]]
+        self.distances = {}
         points = [[x, y] for x in range(10) for y in range(10)]
-        res = []
         for point in points:
-            res.append(self.lowest_dist(point, agents))
-        res, points = (list(t) for t in zip(*sorted(zip(res, points))))
-        return points[-3:]
+            dist = self.lowest_dist(point, agents)
+            self.distances.setdefault(dist, [])
+            self.distances[dist].append(point)
+        return self.distances[sorted([key for key in self.distances.keys()])[-1]]
 
         
     def advice_for_alex(self, agents):

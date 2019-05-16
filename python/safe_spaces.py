@@ -31,7 +31,7 @@ class SafetyFinder:
         """returns the lowest dist to an agent"""
         lowest = 10000
         for agent in agents:
-            dist = root((agents[0] - point[0]) ** 2 + (agents[1] - point[1]) ** 2)
+            dist = root((agent[0] - point[0]) ** 2 + (agent[1] - point[1]) ** 2)
             if dist < lowest:
                 lowest = dist
         return lowest
@@ -50,15 +50,12 @@ class SafetyFinder:
         """
         if agents == [[0, 0]]: return [[9, 9]]
         points = [[x, y] for x in range(10) for y in range(10)]
-        safe_places = [[0, 0], [0, 1], [0, 2]]
-        safe_places_dists = [lowest_dist([0, 0], agents), lowest_dist([0, 1], agents), lowest_dist([0, 2], agents)]
+        res = []
         for point in points:
             for i in range(len(safe_places)):
-                new_dist = lowest_dist(point, agents)
-                if new_dist > safe_places_dists[i]:
-                    safe_places[i] = point
-                    safe_places_dists[i] = new_dist
-        return safe_places
+                res.append(self.lowest_dist(point, agents))
+        res, points = (list(t) for t in zip(*sorted(zip(res, points))))
+        return points[-3:]
 
         
     def advice_for_alex(self, agents):

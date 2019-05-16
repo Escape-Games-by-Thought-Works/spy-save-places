@@ -7,9 +7,9 @@ class SafetyFinder:
     """A class that contains everything we need to find the
     safest places in the city for Alex to hide out
     """
-    def __init__(self):
-        self.abc = [char for char in "abcdefghijklmnopqrstuvwxyz".upper()]
 
+    ALPHABET = [char for char in "abcdefghijklmnopqrstuvwxyz".upper()]
+    CITY_SIZE = 10
 
     def convert_coordinates(self, agents):
         """This method should take a list of alphanumeric coordinates (e.g. 'A6')
@@ -21,12 +21,12 @@ class SafetyFinder:
 
         Returns a list of coordinates in zero-indexed vector form.
         """
-        return [[self.abc.index(agent[0]), int(agent[1:]) - 1] for agent in agents]
+        return [[self.ALPHABET.index(agent[0]), int(agent[1:]) - 1] for agent in agents]
 
 
     def convert_back(self, agents):
         """converts the agents back into alphanumeric coordinates"""
-        return [str(self.abc[agent[0]]) + str(agent[1] + 1) for agent in agents]
+        return [str(self.ALPHABET[agent[0]]) + str(agent[1] + 1) for agent in agents]
 
 
     def lowest_dist(self, point, agents):
@@ -36,7 +36,7 @@ class SafetyFinder:
 
 
     def in_city(self, agent):
-        return (lambda agent: True if agent[0] < 10 and agent[1] < 10 else False)(agent)
+        return True if agent[0] < self.CITY_SIZE and agent[1] < self.CITY_SIZE and agent[1] >= 0 else False
 
 
     def find_safe_spaces(self, agents):
@@ -51,13 +51,15 @@ class SafetyFinder:
         Returns a list of safe spaces in indexed vector form.
         """
         self.distances = {}
-        points = [[x, y] for x in range(10) for y in range(10)]
+        points = [[x, y] for x in range(self.CITY_SIZE) for y in range(self.CITY_SIZE)]
+
         for point in points:
             dist = self.lowest_dist(point, agents)
             self.distances.setdefault(dist, [])
             self.distances[dist].append(point)
+            
         self.max_key = sorted([key for key in self.distances.keys()])[-1]
-        return self.distances[self.max_key]
+        return [] if not self.max_key else self.distances[self.max_key]
 
         
     def advice_for_alex(self, agents):
@@ -72,9 +74,11 @@ class SafetyFinder:
         Returns either a list of alphanumeric map coordinates for Alex to hide in,
         or a specialized message informing her of edge cases
         """
-        if not agents: return "The whole city is safe for Alex! :-)"
         agents = self.convert_coordinates(agents)
+        agents = [agent for agent in agents if self.in_city(agent)]
+        if not agents: return "The whole city is safe for Alex! :-)"
+
         safe_places = self.find_safe_spaces(agents)
-        if not self.max_key: return "There are no safe locations for Alex! :-("
-        if not reduce(lambda x, y: x if x else y, [self.in_city(agent) for agent in agents]): return "The whole city is safe for Alex! :-)"
+        if not safe_places: return "There are no safe locations for Alex! :-("
+
         return self.convert_back(safe_places)

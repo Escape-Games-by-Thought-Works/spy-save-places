@@ -1,16 +1,16 @@
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class SafeSpacesTest {
-    final Comparator<int[]> arrayComparator = (o1, o2) -> o1[0] == o2[0] ? o1[1] - o2[1] : o1[0] - o2[0];
+    private final Comparator<int[]> arrayComparator = (o1, o2) -> o1[0] == o2[0] ? o1[1] - o2[1] : o1[0] - o2[0];
 
-    SafeSpaces objectUnderTest;
+    private SafeSpaces objectUnderTest;
 
     @Before
     public void setup(){
@@ -22,7 +22,6 @@ public class SafeSpacesTest {
      * Test that the method handles an empty list of coordinates correctly
      */
     @Test
-    @Ignore
     public void testEmptyCoordinates(){
         String[] agents = {};
         int[][] coordinates = objectUnderTest.convertCoordinates(agents);
@@ -35,7 +34,6 @@ public class SafeSpacesTest {
      * Test for correct conversion of a single coordinate
      */
     @Test
-    @Ignore
     public void testSingleCoordinate(){
         String[] agents = {"F3"};
         int[][] coordinates = objectUnderTest.convertCoordinates(agents);
@@ -49,7 +47,6 @@ public class SafeSpacesTest {
      * Test for correct conversion from a list of coordinates to multi-dimensional, zero-based array
      */
     @Test
-    @Ignore
     public void testMultipleCoordinates(){
         String[] agents = {"B6","C2","J7"};
         int[][] coordinates = objectUnderTest.convertCoordinates(agents);
@@ -63,7 +60,6 @@ public class SafeSpacesTest {
      * Test that alphanumeric coordinates with a double digit number are handled correctly
      */
     @Test
-    @Ignore
     public void testDoubleDigits(){
         String[] agents = {"J10"};
         int[][] coordinates = objectUnderTest.convertCoordinates(agents);
@@ -81,7 +77,6 @@ public class SafeSpacesTest {
      * Test for six agents at specified locations
      */
     @Test
-    @Ignore
     public void testSafeSpacesRound1(){
         int[][] agents = {{1,1},{3,5},{4,8},{7,3},{7,8},{9,1}};
         int[][] safeSpaces = objectUnderTest.findSafeSpaces(agents);
@@ -95,7 +90,6 @@ public class SafeSpacesTest {
      * Test for six agents at different specified locations
      */
     @Test
-    @Ignore
     public void testSafeSpacesRound2(){
         int[][] agents = {{0,0},{0,9},{1,5},{5,1},{9,0},{9,9}};
         int[][] safeSpaces = objectUnderTest.findSafeSpaces(agents);
@@ -109,7 +103,6 @@ public class SafeSpacesTest {
      * Test for on agent at a specified location
      */
     @Test
-    @Ignore
     public void testSafeSpacesRound3(){
         int[][] agents = {{0,0}};
         int[][] safeSpaces = objectUnderTest.findSafeSpaces(agents);
@@ -127,7 +120,6 @@ public class SafeSpacesTest {
      * Test for agents everywhere in the city
      */
     @Test
-    @Ignore
     public void testAgentsEverywhere(){
         String[] agents = {
                 "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10",
@@ -149,7 +141,6 @@ public class SafeSpacesTest {
      * Test for six agents at specified locations
      */
     @Test
-    @Ignore
     public void testAdviceRound1(){
         String[] agents = {"B2", "D6", "E9", "H4", "H9", "J2"};
         SafeSpaces.SearchResult searchResult = objectUnderTest.adviceForAlex(agents);
@@ -161,7 +152,6 @@ public class SafeSpacesTest {
      * Test for seven agents at specified locations
      */
     @Test
-    @Ignore
     public void testAdviceRound2(){
         String[] agents = {"B4", "C4", "C8", "E2", "F10", "H1", "J6"};
         SafeSpaces.SearchResult searchResult = objectUnderTest.adviceForAlex(agents);
@@ -173,7 +163,6 @@ public class SafeSpacesTest {
      * Test for six agents at different specified locations
      */
     @Test
-    @Ignore
     public void testAdviceRound3(){
         String[] agents = {"A1", "A10", "B6", "F2", "J1", "J10"};
         SafeSpaces.SearchResult searchResult = objectUnderTest.adviceForAlex(agents);
@@ -185,7 +174,6 @@ public class SafeSpacesTest {
      * Test for only one agent
      */
     @Test
-    @Ignore
     public void testAdviceRound4(){
         String[] agents = {"A1"};
         SafeSpaces.SearchResult searchResult = objectUnderTest.adviceForAlex(agents);
@@ -197,7 +185,6 @@ public class SafeSpacesTest {
      * Test for agent outside the map (no agent in the city)
      */
     @Test
-    @Ignore
     public void testAgentOutsideMap(){
         String[] agents = {"A12"};
         SafeSpaces.SearchResult searchResult = objectUnderTest.adviceForAlex(agents);

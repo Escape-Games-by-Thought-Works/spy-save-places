@@ -23,18 +23,18 @@ describe('Spy Places Level 1 - convert coordinates', () => {
   })
 })
 
-xdescribe('Spy Places Level 2 - find save places', () => {
-  it('some places are save if agents are some', () => {
+describe('Spy Places Level 2 - find safe places', () => {
+  it('some places are safe if agents are some', () => {
     const agents = [[1, 1], [3, 5], [4, 8], [7, 3], [7, 8], [9, 1]]
     expect(findSafePlaces(agents).length).toEqual(3)
     expect(findSafePlaces(agents)).toEqual(expect.arrayContaining([[0, 9], [0, 7], [5, 0]]))
   })
-  it('some places are save if agents are some', () => {
+  it('some places are safe if agents are some', () => {
     const agents = [[0, 0], [0, 9], [1, 5], [5, 1], [9, 0], [9, 9]]
     expect(findSafePlaces(agents).length).toEqual(3)
     expect(findSafePlaces(agents)).toEqual(expect.arrayContaining([[5, 7], [6, 6], [7, 5]]))
   })
-  it('one place is save', () => {
+  it('one place is safe', () => {
     const agents = [[0, 0]]
     expect(findSafePlaces(agents).length).toEqual(1)
     expect(findSafePlaces(agents)).toEqual(expect.arrayContaining([[9, 9]]))
@@ -46,7 +46,7 @@ xdescribe('Spy Places Level 3 - find edge cases and give advice to Alex', () => 
     const agents = []
     expect(adviceForAlex(agents)).toEqual('The whole city is safe for Alex! :-)')
   })
-  it('no place is save if agents are everywhere', () => {
+  it('no place is safe if agents are everywhere', () => {
     const agents =
       ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10',
        'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B10',
@@ -62,22 +62,22 @@ xdescribe('Spy Places Level 3 - find edge cases and give advice to Alex', () => 
     expect(adviceForAlex(agents)).toEqual('There are no safe locations for Alex! :-(')
   })
 
-  it('some places are save if agents are some', () => {
+  it('some places are safe if agents are some', () => {
     const agents = ['B2', 'D6', 'E9', 'H4', 'H9', 'J2']
     expect(adviceForAlex(agents).length).toEqual(3)
     expect(adviceForAlex(agents)).toEqual(expect.arrayContaining(['A10', 'A8', 'F1']))
   })
-  it('some places are save if agents are some', () => {
+  it('some places are safe if agents are some', () => {
     const agents = ['B4', 'C4', 'C8', 'E2', 'F10', 'H1', 'J6']
     expect(adviceForAlex(agents).length).toEqual(11)
     expect(adviceForAlex(agents)).toEqual(expect.arrayContaining(['A1', 'A10', 'E6', 'F5', 'F6', 'G4', 'G5', 'G7', 'H8', 'I9', 'J10']))
   })
-  it('some places are save if agents are some', () => {
+  it('some places are safe if agents are some', () => {
     const agents = ['A1', 'A10', 'B6', 'F2', 'J1', 'J10']
     expect(adviceForAlex(agents).length).toEqual(3)
     expect(adviceForAlex(agents)).toEqual(expect.arrayContaining(['F8', 'G7', 'H6']))
   })
-  it('one save place', () => {
+  it('one safe place', () => {
     const agents = ['A1']
     expect(adviceForAlex(agents).length).toEqual(1)
     expect(adviceForAlex(agents)).toEqual(expect.arrayContaining(['J10']))

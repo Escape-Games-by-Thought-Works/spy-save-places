@@ -1,11 +1,19 @@
-// This is where you implement your solution 
+const convertFromBoardCoordinates = (sBoardCoords) => {
+  let aMatches = sBoardCoords.match(/([A-J])(\d+)/)
+  return [aMatches[1].charCodeAt() - 65, aMatches[2] - 1];
+}
+
+const convertToBoardCoordinates = (aCoords) => {
+  return String.fromCharCode(aCoords[0] + 65) + (aCoords[1] + 1);
+}
+
 const convertCoordinates = (agents) => {
   let aCoords = [];
   
   if (Array.isArray(agents)) {
     aCoords = agents
-      .map(sAgent => sAgent.match(/([A-J])(\d+)/))
-      .map(aMatches => [aMatches[1].charCodeAt() - 65, aMatches[2] - 1]);
+      .map(sAgent => convertFromBoardCoordinates(sAgent))
+      .filter(aCoord => aCoord[0] >= 0 && aCoord[0] < 10 && aCoord[1] >= 0 && aCoord[1] < 10);
   }
 
   return aCoords;
@@ -13,8 +21,6 @@ const convertCoordinates = (agents) => {
 
 const findClosestAgentDistance = (x, y, aAgentCoords) => {
   let aAgentDistances = aAgentCoords.map(aAgentCoord => Math.abs(x - aAgentCoord[0]) + Math.abs(y - aAgentCoord[1])); 
-  console.log(aAgentDistances);
-  console.log(Math.min(...aAgentDistances));
   return Math.min(...aAgentDistances);
 }
 
@@ -40,7 +46,19 @@ const findSafePlaces = (agents) => {
 }
 
 const adviceForAlex = (agents) => {
-  return "adviceForAlex"
+  let aSafeCoords = findSafePlaces(convertCoordinates(agents)).map(convertToBoardCoordinates);
+
+  // no agents
+  if (aSafeCoords.length === 100) {
+    return "The whole city is safe for Alex! :-)";
+  }
+
+  // city filled with agents
+  if (aSafeCoords.length === 0) {
+    return "There are no safe locations for Alex! :-(";
+  }
+
+  return aSafeCoords;
 }
 
 module.exports = {

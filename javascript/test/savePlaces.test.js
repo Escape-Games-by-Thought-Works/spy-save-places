@@ -41,7 +41,7 @@ describe('Spy Places Level 2 - find safe places', () => {
   })
 })
 
-xdescribe('Spy Places Level 3 - find edge cases and give advice to Alex', () => {
+describe('Spy Places Level 3 - find edge cases and give advice to Alex', () => {
   it('should be replaced with a descriptive message', () => {
     const agents = []
     expect(adviceForAlex(agents)).toEqual('The whole city is safe for Alex! :-)')

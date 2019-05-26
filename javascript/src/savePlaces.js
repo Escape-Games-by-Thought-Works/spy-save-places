@@ -1,18 +1,29 @@
-// This is where you implement your solution 
-const convertCoordinates = (agents) => {
-  return [[0,0],[1,2]]
-}
+const NO_AGENTS_IN_CITY = "The whole city is safe for Alex! :-)";
+const NO_SAFE_LOCATIONS = "There are no safe locations for Alex! :-(";
 
-const findSafePlaces = (agents) => {
-  return "findSafePlaces"
-}
+// This is where you implement your solution
+const convertCoordinates = agents => {
+  const agentMapped = agents.map(agent => {
+    return [
+      agent.substring(0).charCodeAt(0) - 65,
+      parseInt(agent.substring(1), 10) - 1
+    ];
+  });
+  return agentMapped;
+};
 
-const adviceForAlex = (agents) => {
-  return "adviceForAlex"
-}
+const findSafePlaces = agents => {
+  return "findSafePlaces";
+};
+
+const adviceForAlex = agents => {
+  //1. convert agents to coordinates
+  const agentCoordinates = convertCoordinates(agents);
+  return "adviceForAlex";
+};
 
 module.exports = {
   convertCoordinates,
   findSafePlaces,
   adviceForAlex
-}
+};

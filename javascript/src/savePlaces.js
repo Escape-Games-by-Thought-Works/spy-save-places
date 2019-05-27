@@ -11,7 +11,6 @@ const isValid = agentCoord => {
   return agentCoord;
 };
 
-// This is where you implement your solution
 const convertCoordinates = agents => {
   let agentMapped = agents.map(agent => {
     let agentCoord = [
@@ -48,7 +47,7 @@ const findSafePlaces = agents => {
   );
 
   locations.forEach(location => {
-    distanceToCloseAgent = checkDistanceToAgents(agents, location);
+    let distanceToCloseAgent = checkDistanceToAgents(agents, location);
 
     if (
       distanceToCloseAgent > maxDistanceUntilNow ||
@@ -77,8 +76,6 @@ const checkDistanceToAgents = (agents, location) => {
 
     if (minDistance !== undefined) {
       distToAgent = Math.min(minDistance, distToAgent);
-    } else {
-      minDistance = distToAgent;
     }
 
     minDistance = distToAgent;

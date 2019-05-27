@@ -6,6 +6,8 @@ import java.util.Arrays;
 class SafeSpaces {
 
     private boolean isAgentOutside;
+    private static final String NO_SAFE_LOCATION = "There are no safe locations for Alex! :-(";
+    private static final String ALL_SAFE_LOCATION = "The whole city is safe for Alex! :-)";
 
     /**
      * This method should convert an one dimensional Array with alphanumeric coordinates (e.g. ["A1"]) to a
@@ -60,8 +62,6 @@ class SafeSpaces {
                 coordinatesWithSafeDistance[i][j] = minValue(distances);
             }
         }
-
-
         return calculateSafePoints(coordinatesWithSafeDistance);
     }
 
@@ -75,11 +75,10 @@ class SafeSpaces {
     SearchResult adviceForAlex(String[] alphanumericCoordinates) {
         SearchResult returnValue;
         int[][] safePlaces = findSafeSpaces(convertCoordinates(alphanumericCoordinates));
-        System.out.println("LEN"+safePlaces.length);
         if (safePlaces.length == 0) {
-            returnValue = new SearchResult("There are no safe locations for Alex! :-(");
+            returnValue = new SearchResult(NO_SAFE_LOCATION);
         } else if (isAgentOutside) {
-            returnValue = new SearchResult("The whole city is safe for Alex! :-)");
+            returnValue = new SearchResult(ALL_SAFE_LOCATION);
         } else {
             return new SearchResult(convertCoordinates(safePlaces));
         }
@@ -96,11 +95,11 @@ class SafeSpaces {
         private String message;
         private String[] safeLocations;
 
-        public SearchResult(String message) {
+        SearchResult(String message) {
             this.message = message;
         }
 
-        public SearchResult(String[] safeLocations) {
+        SearchResult(String[] safeLocations) {
             Arrays.sort(safeLocations);
             this.safeLocations = safeLocations;
         }
@@ -128,11 +127,9 @@ class SafeSpaces {
     private int[][] calculateSafePoints(int[][] coordinatesWithSafeDistance) {
 
         int[][] safePoints = new int[100][2];
-
         int[] distances = new int[100];
-
-
         int count = 0;
+
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 distances[count] = coordinatesWithSafeDistance[i][j];
@@ -147,7 +144,6 @@ class SafeSpaces {
 
         int finalCount = 0;
 
-
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (coordinatesWithSafeDistance[i][j] == maxSafeDistance) {
@@ -157,15 +153,12 @@ class SafeSpaces {
                     safePoints[finalCount] = data;
                     finalCount++;
                 }
-
             }
         }
 
         int[][] finalReturnArray = new int[finalCount][2];
 
-        for (int i = 0; i < finalCount; i++) {
-            finalReturnArray[i] = safePoints[i];
-        }
+        System.arraycopy(safePoints, 0, finalReturnArray, 0, finalCount);
         return finalReturnArray;
     }
 

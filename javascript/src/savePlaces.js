@@ -7,40 +7,63 @@ const gridsY = 9;
 let maxDistanceUntilNow = 0;
 let safePlaces = [];
 
+const isValid = agentCoord => {
+  if (agentCoord[0] > gridsX || agentCoord[1] > gridsY + 1) {
+    return false;
+  }
+  return agentCoord;
+};
+
 // This is where you implement your solution
 const convertCoordinates = agents => {
-  return (agentMapped = agents.map(agent => {
-    return [
+  let agentMapped = agents.map(agent => {
+    let agentCoord = [
       agent.substring(0).charCodeAt(0) - 65,
       parseInt(agent.substring(1), 10) - 1
     ];
-  }));
+
+    return isValid(agentCoord) ? agentCoord : false;
+  });
+
+  return agentMapped.filter(agent => agent !== false);
+};
+
+const createTheCity = () => {
+  let matrix = [];
+  for (var i = 0; i <= gridsX; i++) {
+    for (var j = 0; j <= gridsY; j++) {
+      matrix.push([i, j]);
+    }
+  }
+  return matrix;
+};
+
+const isAgentLocation = (location, agents) => {
+  return JSON.stringify(agents).includes(location);
 };
 
 const findSafePlaces = agents => {
-  for (var i = 0; i <= gridsX; i++) {
-    for (var j = 0; j <= gridsY; j++) {
-      distanceToCloseAgent = checkDistanceToAgents(agents, [i, j]);
+  let locations = createTheCity().filter(
+    location => !isAgentLocation(location, agents)
+  );
 
-      if (
-        distanceToCloseAgent > maxDistanceUntilNow ||
-        distanceToCloseAgent == maxDistanceUntilNow
-      ) {
-        if (distanceToCloseAgent == maxDistanceUntilNow) {
-          safePlaces.push([i, j]);
-        } else if (distanceToCloseAgent > maxDistanceUntilNow) {
-          safePlaces = [];
-          safePlaces.push([i, j]);
-          maxDistanceUntilNow = distanceToCloseAgent;
-        }
+  locations.forEach(location => {
+    distanceToCloseAgent = checkDistanceToAgents(agents, location);
+    if (
+      distanceToCloseAgent > maxDistanceUntilNow ||
+      distanceToCloseAgent == maxDistanceUntilNow
+    ) {
+      if (distanceToCloseAgent == maxDistanceUntilNow) {
+        safePlaces.push(location);
+      } else if (distanceToCloseAgent > maxDistanceUntilNow) {
+        safePlaces = [];
+        safePlaces.push(location);
+        maxDistanceUntilNow = distanceToCloseAgent;
       }
     }
-  }
-  return safePlaces;
-};
+  });
 
-const addToSafePlaces = _safePlaces => {
-  _safePlaces.forEach(_safePlace => safePlaces.push(_safePlace));
+  return safePlaces;
 };
 
 const checkDistanceToAgents = (agents, location) => {
@@ -64,24 +87,26 @@ const checkDistanceToAgents = (agents, location) => {
   return distToAgent;
 };
 
+const mapToAddress = locations => {
+  return locations.map(
+    location => String.fromCharCode(location[0] + 65) + (location[1] + 1)
+  );
+};
+
 const adviceForAlex = agents => {
-  //1. convert agents to coordinates
   const agentCoordinates = convertCoordinates(agents);
 
   if (agentCoordinates.length == 0) {
     return NO_AGENTS_IN_CITY;
   }
 
-  return "adviceForAlex";
+  const safeLocations = findSafePlaces(agentCoordinates);
+  if (safeLocations.length == 0) {
+    return NO_SAFE_LOCATIONS;
+  }
+
+  return mapToAddress(safeLocations);
 };
-
-// const testing = () => {
-//   const agents = [[1, 1], [3, 5], [4, 8], [7, 3], [7, 8], [9, 1]];
-
-//   findSafePlaces(agents);
-// };
-
-// testing();
 
 module.exports = {
   convertCoordinates,

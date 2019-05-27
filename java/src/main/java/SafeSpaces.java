@@ -8,6 +8,9 @@ class SafeSpaces {
     private boolean isAgentOutside;
     private static final String NO_SAFE_LOCATION = "There are no safe locations for Alex! :-(";
     private static final String ALL_SAFE_LOCATION = "The whole city is safe for Alex! :-)";
+    private static final int MAX_ROW = 10;
+    private static final int MAX_COLUMN = 10;
+
 
     /**
      * This method should convert an one dimensional Array with alphanumeric coordinates (e.g. ["A1"]) to a
@@ -28,8 +31,8 @@ class SafeSpaces {
             result[0] = x;
             result[1] = y;
             returnArray[i] = result;
-            if(x>=10 || y>= 10){
-                this.isAgentOutside=true;
+            if (x >= MAX_ROW || y >= MAX_COLUMN) {
+                this.isAgentOutside = true;
             }
         }
         return returnArray;
@@ -45,12 +48,10 @@ class SafeSpaces {
      * @see SafeSpaces#convertCoordinates(String[]) for the two-dimensional, zero-based representation of coordinates
      */
     int[][] findSafeSpaces(int[][] agentCoordinates) {
-        int maxX = 10;
-        int maxY = 10;
-        int[][] coordinatesWithSafeDistance = new int[maxX][maxY];
+        int[][] coordinatesWithSafeDistance = new int[MAX_ROW][MAX_COLUMN];
 
-        for (int i = 0; i < maxX; i++) {
-            for (int j = 0; j < maxY; j++) {
+        for (int i = 0; i < MAX_ROW; i++) {
+            for (int j = 0; j < MAX_COLUMN; j++) {
                 int[] distances = new int[agentCoordinates.length];
                 for (int k = 0; k < agentCoordinates.length; k++) {
                     int[] currentPoint = new int[2];
@@ -126,12 +127,12 @@ class SafeSpaces {
 
     private int[][] calculateSafePoints(int[][] coordinatesWithSafeDistance) {
 
-        int[][] safePoints = new int[100][2];
-        int[] distances = new int[100];
+        int[][] safePoints = new int[MAX_ROW * MAX_COLUMN][2];
+        int[] distances = new int[MAX_ROW * MAX_COLUMN];
         int count = 0;
 
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < MAX_ROW; i++) {
+            for (int j = 0; j < MAX_COLUMN; j++) {
                 distances[count] = coordinatesWithSafeDistance[i][j];
                 count++;
             }
@@ -144,8 +145,8 @@ class SafeSpaces {
 
         int finalCount = 0;
 
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < MAX_ROW; i++) {
+            for (int j = 0; j < MAX_COLUMN; j++) {
                 if (coordinatesWithSafeDistance[i][j] == maxSafeDistance) {
                     int[] data = new int[2];
                     data[0] = i;
@@ -157,17 +158,16 @@ class SafeSpaces {
         }
 
         int[][] finalReturnArray = new int[finalCount][2];
-
         System.arraycopy(safePoints, 0, finalReturnArray, 0, finalCount);
         return finalReturnArray;
     }
 
-    private String[] convertCoordinates(int[][] coordinates){
-        String[] returnArray=new String[coordinates.length];
-        for (int i=0; i< coordinates.length;i++){
-            String first =  String.valueOf((char)(coordinates[i][0] + 65));
-            int second = coordinates[i][1]+1;
-            returnArray[i]=first+second;
+    private String[] convertCoordinates(int[][] coordinates) {
+        String[] returnArray = new String[coordinates.length];
+        for (int i = 0; i < coordinates.length; i++) {
+            String first = String.valueOf((char) (coordinates[i][0] + 65));
+            int second = coordinates[i][1] + 1;
+            returnArray[i] = first + second;
         }
         return returnArray;
     }

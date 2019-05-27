@@ -4,7 +4,7 @@ const NO_SAFE_LOCATIONS = "There are no safe locations for Alex! :-(";
 const gridsX = "J".charCodeAt(0) - 65;
 const gridsY = 9;
 
-let maxDistanceUntilNow;
+let maxDistanceUntilNow = 0;
 let safePlaces = [];
 
 // This is where you implement your solution
@@ -19,33 +19,23 @@ const convertCoordinates = agents => {
 
 const findSafePlaces = agents => {
   for (var i = 0; i <= gridsX; i++) {
-    let _safePlaces = [];
     for (var j = 0; j <= gridsY; j++) {
       distanceToCloseAgent = checkDistanceToAgents(agents, [i, j]);
-
-      if (!maxDistanceUntilNow) {
-        maxDistanceUntilNow = distanceToCloseAgent;
-        _safePlaces.push([i, j]);
-        continue;
-      }
 
       if (
         distanceToCloseAgent > maxDistanceUntilNow ||
         distanceToCloseAgent == maxDistanceUntilNow
       ) {
-        if (distanceToCloseAgent > maxDistanceUntilNow) {
-          _safePlaces.length = 0;
+        if (distanceToCloseAgent == maxDistanceUntilNow) {
+          safePlaces.push([i, j]);
+        } else if (distanceToCloseAgent > maxDistanceUntilNow) {
+          safePlaces = [];
+          safePlaces.push([i, j]);
+          maxDistanceUntilNow = distanceToCloseAgent;
         }
-
-        maxDistanceUntilNow = distanceToCloseAgent;
-        _safePlaces.push([i, j]);
       }
     }
-    if (_safePlaces.length !== 0) {
-      addToSafePlaces(_safePlaces);
-    }
   }
-  // console.log(safePlaces);
   return safePlaces;
 };
 
@@ -59,24 +49,17 @@ const checkDistanceToAgents = (agents, location) => {
   for (var k = 0; k <= agents.length - 1; k++) {
     let agent = agents[k];
 
-    if (agent[0] == location[0] && agent[1] == location[1]) {
-      // problem here
-      continue;
-    } //same as agent
-
     distToAgent =
       Math.abs(agent[0] - location[0]) + Math.abs(agent[1] - location[1]);
 
-    if (1 == location[0] && 1 == location[1]) {
-      console.log(distToAgent, location, agent);
-    }
-    if (minDistance) {
+    if (minDistance !== undefined) {
       distToAgent = Math.min(minDistance, distToAgent);
+    } else {
+      minDistance = distToAgent;
     }
 
     minDistance = distToAgent;
   }
-  // console.log("distToAgent", distToAgent, location);
 
   return distToAgent;
 };
@@ -92,13 +75,13 @@ const adviceForAlex = agents => {
   return "adviceForAlex";
 };
 
-const testing = () => {
-  const agents = [[1, 1], [3, 5], [4, 8], [7, 3], [7, 8], [9, 1]];
+// const testing = () => {
+//   const agents = [[1, 1], [3, 5], [4, 8], [7, 3], [7, 8], [9, 1]];
 
-  findSafePlaces(agents);
-};
+//   findSafePlaces(agents);
+// };
 
-testing();
+// testing();
 
 module.exports = {
   convertCoordinates,

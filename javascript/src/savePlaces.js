@@ -4,9 +4,6 @@ const NO_SAFE_LOCATIONS = "There are no safe locations for Alex! :-(";
 const gridsX = "J".charCodeAt(0) - 65;
 const gridsY = 9;
 
-let maxDistanceUntilNow = 0;
-let safePlaces = [];
-
 const isValid = agentCoord => {
   if (agentCoord[0] > gridsX || agentCoord[1] > gridsY + 1) {
     return false;
@@ -43,12 +40,16 @@ const isAgentLocation = (location, agents) => {
 };
 
 const findSafePlaces = agents => {
+  let safePlaces = [];
+  let maxDistanceUntilNow = 0;
+
   let locations = createTheCity().filter(
     location => !isAgentLocation(location, agents)
   );
 
   locations.forEach(location => {
     distanceToCloseAgent = checkDistanceToAgents(agents, location);
+
     if (
       distanceToCloseAgent > maxDistanceUntilNow ||
       distanceToCloseAgent == maxDistanceUntilNow
@@ -62,7 +63,6 @@ const findSafePlaces = agents => {
       }
     }
   });
-
   return safePlaces;
 };
 

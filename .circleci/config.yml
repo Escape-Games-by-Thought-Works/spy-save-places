@@ -41,6 +41,15 @@ jobs:
               cd ./python && . env/bin/activate
               pytest safe_spaces_test.py
 
+  test-java:
+    docker:
+      - image: circleci/openjdk:8-jdk-node-browsers
+    steps:
+      - checkout
+      - run:
+          name: Run Tests
+          command: cd ./java && ./gradlew test
+
 workflows:
   version: 2
   build_and_test:
@@ -48,4 +57,5 @@ workflows:
       - test-ruby
       - test-javascript
       - test-python
+      - test-java
 
